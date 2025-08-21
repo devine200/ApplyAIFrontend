@@ -64,11 +64,13 @@
 }
 
 .content-editor-heading button.content-edit {
+    transform: scale(.9);
+}
+
+.icon-btn {
     background: none;
     border: none;
-    /* position: relative;
-    bottom: 2px; */
-    transform: scale(.9);
+    margin: 0px;
 }
 
 .pointer {
@@ -85,4 +87,49 @@
 }
 .content-hidden {
     display: none;
+}
+
+.label {
+    font-size: 14px;
+}
+
+.header-label-holder {
+    display: flex;
+    justify-content: space-between; 
+    margin-bottom: 5px;
+}
+
+.view-btn {
+    display: flex;
+    gap: 5px;
+    color: inherit;
+    font: inherit;
+}
+
+.contact-info-settings {
+    display: flex;
+    padding: 20px 0px;
+    gap: 10px;
+}
+
+.highlight-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #d2d4d6;
+    box-shadow: 0 1px 2px 0 #eaecee;
+    font: inherit;
+    color: inherit;
+}
+
+.highlight-input:focus {
+    border: 1px solid rgb(62 192 221);
+    box-shadow: 0 1px 2px 0 rgb(203, 231, 236);
+}
+
+.highlight-input::placeholder {
+    font: inherit;
 }

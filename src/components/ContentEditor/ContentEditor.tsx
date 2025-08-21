@@ -19,7 +19,7 @@ const ContentEditor = ({ children, title, isEditable }: ContentEditorProps) => {
       <div className="content-editor-heading">
         <div className="heading-holder">
           <h2>{ title }</h2>
-          { isEditable && <button className="content-edit pointer"><img src={PenIcon} alt="" /></button>}
+          { isEditable && <button className="content-edit pointer icon-btn"><img src={PenIcon} alt="edit icon" /></button>}
         </div>
         <button className={`toggle-form pointer ${isOpen ? "" : "toggle-form-down"}`} onClick={handleToggle}>{">"}</button>
       </div>

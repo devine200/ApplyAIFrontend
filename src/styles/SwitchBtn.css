@@ -1,0 +1,115 @@
+:root {
+  --on: #3ec0dd; /* ON color */
+  --off: #d1d5db; /* OFF color */
+  --track: 44px; /* width  */
+  --height: 24px; /* height */
+  --thumb: 18px; /* knob   */
+  --ring: 3px; /* focus ring size */
+  --dur: 0.2s; /* animation duration */
+}
+
+/* Base toggle */
+.toggle {
+  --_track: var(--track);
+  --_height: var(--height);
+  --_thumb: var(--thumb);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Visually-hidden checkbox but still accessible */
+.toggle input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+/* Track */
+.toggle .track {
+  width: var(--_track);
+  height: var(--_height);
+  background: var(--off);
+  border-radius: 999px;
+  position: relative;
+  transition: background var(--dur) linear;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+/* Thumb */
+.toggle .thumb {
+  width: var(--_thumb);
+  height: var(--_thumb);
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  translate: 0 -50%;
+  transition: left var(--dur) ease, box-shadow var(--dur) ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ON state */
+.toggle input:checked ~ .track {
+  background: var(--on);
+}
+.toggle input:checked ~ .thumb {
+  left: calc(var(--_track) - var(--_thumb) - 3px);
+}
+
+/* Focus styles (keyboard) */
+.toggle input:focus-visible ~ .track {
+  outline: var(--ring) solid color-mix(in srgb, var(--on) 60%, #0000);
+  outline-offset: 2px;
+}
+
+/* Disabled */
+.toggle input:disabled ~ .track {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.toggle input:disabled ~ .thumb {
+  opacity: 0.6;
+}
+
+/* Size variants */
+.toggle.sm {
+  --_track: 34px;
+  --_height: 18px;
+  --_thumb: 14px;
+}
+.toggle.lg {
+  --_track: 58px;
+  --_height: 32px;
+  --_thumb: 26px;
+}
+
+/* Optional label text spacing */
+.toggle + .label {
+  margin-inline-start: 0.6rem;
+  font: 500 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    sans-serif;
+  vertical-align: middle;
+}
+
+.switch-btn {
+    display: flex;
+    align-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle .track,
+  .toggle .thumb {
+    transition: none;
+  }
+}
