@@ -1,0 +1,88 @@
+@font-face {
+    font-family: "circlar std";
+    src: url("../assets/fonts/circular-std-medium-500.ttf") format("woff");
+    /* font-weight: 400; */
+    font-style: normal;
+}
+
+.editor-layout {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.layout-section {
+    min-width: calc(50vw - 60px);
+    height: 100vh;
+    overflow-y: scroll;
+    /* background: pink; */
+    padding: 2px;
+}
+
+.content-editor-layout {
+    font-family: "circlar std"
+}
+
+.content-editor-children {
+    background: white;
+    color: rgb(38,49,55);
+    padding: 25px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
+    margin: 25px auto;
+}
+
+.content-editor-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content-editor-heading h2 {
+    margin: 0px;
+}
+
+.content-editor-heading button.toggle-form {
+    padding: 0px 10px;
+    padding-top: 1px;
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: lighter;
+    color: rgb(107 114 128);
+    background: rgb(248 250 252);
+    border: .1px solid rgb(224, 230, 236);
+    transform: scaleX(1.7) rotateZ(-90deg);
+}
+
+.content-editor-heading button.toggle-form:hover {
+    color: rgb(54, 58, 66);
+    transition: color 0.3s ease-in;
+}
+
+.toggle-form-down {
+    transform: scaleX(1.7) rotateZ(-90deg) rotateY(180deg) !important;
+}
+
+.content-editor-heading button.content-edit {
+    background: none;
+    border: none;
+    /* position: relative;
+    bottom: 2px; */
+    transform: scale(.9);
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.content-editor-heading .heading-holder {
+    display: flex;
+    gap: 2px;
+}
+
+.content-editor-body {
+    margin-top: 25px;
+}
+.content-hidden {
+    display: none;
+}
