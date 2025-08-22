@@ -26,7 +26,7 @@ const ContentItem = ({title, children}: ContentItemProps) => {
                     {">"}
                 </button>
             </div>
-            <div className="content-item-body">
+            <div className={`content-item-body ${isOpen ? "" : "content-hidden"}`}>
                 {children}
             </div>
         </div>

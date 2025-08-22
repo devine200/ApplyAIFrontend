@@ -1,6 +1,8 @@
 import EducationContentForm from "./ContentEditor/EducationContentForm"
 import HeaderContentForm from "./ContentEditor/HeaderContentForm"
 import ProfessionalSummaryForm from "./ContentEditor/ProfessionalSummaryForm"
+import CertificationForm from "./ContentEditor/CertificationForm"
+import ProfessionalExperienceForm from "./ContentEditor/ProfessionalExperienceForm"
 
 const ContentEditorLayout = () => {
   return (
@@ -8,7 +10,8 @@ const ContentEditorLayout = () => {
         <HeaderContentForm />
         <ProfessionalSummaryForm />
         <EducationContentForm />
-        <div className="content-editor-children">content</div>
+        <CertificationForm />
+        <ProfessionalExperienceForm />
         <div className="content-editor-children">content</div>
         <div className="content-editor-children">content</div>
     </div>

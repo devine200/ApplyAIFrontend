@@ -91,7 +91,7 @@ button.toggle-form:hover {
 }
 
 .content-hidden {
-    display: none;
+    display: none !important;
 }
 
 .label {
@@ -249,13 +249,13 @@ button.toggle-form:hover {
     border: 1px solid #e8e9eb;
     border-radius: 5px;
     padding: 20px;
+    margin-bottom: 15px;
 }
 
 .content-item-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
 }
 
 .content-item-header .heading {
@@ -266,14 +266,89 @@ button.toggle-form:hover {
     transform: scale(1.4);
 }
 
-.content-item-body {
+.education-content-item-body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-top: 10px;
     gap: 10px;
 }
 
 .content-item-body textarea {
     width: 100%;
     height: 80px;
+}
+
+.exp-role {
+    display: flex;
+}
+
+.exp-role h4 {
+    margin: 0px;
+    padding: 0px;
+}
+
+.exp-role button {
+    transform: scale(.8)
+}
+
+.exp-item-input {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+.exp-item-input input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: #12A1C0;
+    border-radius: 10px !important;
+}
+
+.exp-item-input .ai-assist-btn {
+    border: 1px solid #12A1C0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.ai-assist-btn:hover {
+    border: 1px solid rgb(35, 119, 138);
+}
+
+.exp-item-input input[type="text"] {
+    font: inherit;
+    color: inherit;
+    font-size: 14px;
+    padding: 10px;
+    display: block;
+    width: 100%;
+}
+
+.exp-item-input input[type="text"]:focus {
+    height: 100px;
+}
+
+.add-exp-item-btn {
+    color: rgb(38, 165, 193);
+    font: inherit;
+    font-size: 14px;
+    background-color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.166);
+}
+
+.add-exp-item-btn:hover {
+    color: rgb(62 192 221);
+}
+
+.add-btn-holder {
+    text-align: left;
+    padding-top: 15px;
+    padding-left: 30px;
 }

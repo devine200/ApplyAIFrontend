@@ -6,11 +6,10 @@ import {
   convertToRaw,
   convertFromRaw,
   type DraftEditorCommand,
-  DraftHandleValue,
   ContentBlock,
 } from "draft-js";
 import Toolbar from "./Toolbar";
-import "./DraftEditor.css";
+// import "../../../styles/DraftEditor.css";
 
 const DraftEditor = () => {
   const [editorState, setEditorState] = useState(
