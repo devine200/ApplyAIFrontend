@@ -1,6 +1,6 @@
 import React from "react";
-import SettingsIcon from "../../assets/icons/gears.png";
-import SuggestIcon from "../../assets/icons/shines.png";
+import SettingsIcon from "../../../assets/icons/gears.png";
+import SuggestIcon from "../../../assets/icons/shines.png";
 
 const AIHelperBtn = () => {
   return (

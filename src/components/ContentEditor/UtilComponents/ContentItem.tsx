@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import grabIcon from "../../assets/icons/reorder.png"
+import grabIcon from "../../../assets/icons/reorder.png"
 
 interface ContentItemProps {
     title: string;

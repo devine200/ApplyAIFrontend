@@ -1,5 +1,5 @@
 import React from 'react'
-import ContentItem from './ContentItem'
+import ContentItem from './UtilComponents/ContentItem'
 
 const EducationContentItem = () => {
 

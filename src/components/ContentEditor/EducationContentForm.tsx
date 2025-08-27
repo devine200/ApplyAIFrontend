@@ -1,6 +1,6 @@
 import React from "react";
-import ContentEditor from "./ContentEditor";
-import AddSection from "./AddSection";
+import ContentEditor from "./UtilComponents/ContentEditor";
+import AddSection from "./UtilComponents/AddSection";
 import EducationContentItem from "./EducationContentItem";
 
 const EducationContentForm = () => {

@@ -1,7 +1,6 @@
 import React from "react";
-import ContentEditor from "./ContentEditor";
-import AddSection from "./AddSection";
-import ContentItem from "./ContentItem";
+import ContentEditor from "./UtilComponents/ContentEditor";
+import AddSection from "./UtilComponents/AddSection";
 import ExperienceItemForm from "./ExperienceItem/ExperienceItemForm";
 
 const ProfessionalExperienceForm = () => {
@@ -9,7 +8,7 @@ const ProfessionalExperienceForm = () => {
     <ContentEditor
       isEditable={true}
       isDraggable={true}
-      title="ProfessionalExperience"
+      title="Professional Experience"
     >
       <div>
         <AddSection
@@ -17,21 +16,7 @@ const ProfessionalExperienceForm = () => {
           btnName="Add Experience"
           description="Add them to your Simplify Profile. You can selectively hide/show relevant experiences for each resume you create."
         />
-        <ContentItem title="Tradable">
-          <div>
-            <ExperienceItemForm />
-          </div>
-        </ContentItem> 
-        <ContentItem title="Tradable">
-          <div>
-            <ExperienceItemForm />
-          </div>
-        </ContentItem> 
-        <ContentItem title="Tradable">
-          <div>
-            <ExperienceItemForm />
-          </div>
-        </ContentItem> 
+        <ExperienceItemForm />
       </div>
     </ContentEditor>
   );

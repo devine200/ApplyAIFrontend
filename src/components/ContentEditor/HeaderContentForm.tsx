@@ -1,7 +1,7 @@
-import ContentEditor from "./ContentEditor"
+import ContentEditor from "./UtilComponents/ContentEditor"
 import ViewIcon from "../../assets/icons/view.png"
-import IconBtn from "./IconBtn"
-import SwitchBtn from "./SwitchBtn"
+import IconBtn from "./UtilComponents/IconBtn"
+import SwitchBtn from "./UtilComponents/SwitchBtn"
 
 const HeaderContentForm = () => {
   return (

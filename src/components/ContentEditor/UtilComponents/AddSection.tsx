@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BulbIcon from "../../assets/icons/idea.png";
+import BulbIcon from "../../../assets/icons/idea.png";
 
 interface AddSectionProps {
   title: string;

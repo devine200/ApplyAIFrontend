@@ -1,4 +1,4 @@
-import "../../styles/SwitchBtn.css"
+import "../../../styles/SwitchBtn.css"
 
 interface SwitchBtnProps {
     label: string;

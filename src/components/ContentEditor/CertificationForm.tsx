@@ -1,5 +1,5 @@
 import React from 'react'
-import ContentEditor from './ContentEditor'
+import ContentEditor from './UtilComponents/ContentEditor'
 import TextEditor from './TextEditor.tsx/TextEditor'
 
 const CertificationForm = () => {
