@@ -1,0 +1,93 @@
+.resume2.container {
+  font-family: Georgia, serif;
+  color: #222;
+  line-height: 1.6;
+  width: 850px;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+/* Header */
+.resume2 .header {
+  text-align: center;
+  border-bottom: 4px solid #222;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+.resume2 .header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+.resume2 .header p {
+  margin: 6px 0 0;
+  font-size: 8px;
+  color: #444;
+}
+.resume2 .header a {
+  color: #222;
+  text-decoration: none;
+}
+/* Sections */
+.resume2 h2 {
+  font-size: 12px;
+  margin: 14px 0 6px;
+  color: #222;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 6px;
+}
+.resume2 p {
+  font-size: 8px;
+  margin: 8px 0;
+}
+.resume2 ul {
+  margin: 8px 0 8px 20px;
+  padding-left: 10px;
+}
+.resume2 ul li {
+  margin-bottom: 2px;
+  font-size: 8px;
+}
+.resume2 strong {
+    font-size: inherit;
+  font-weight: 700;
+}
+.resume2 em {
+  font-style: italic;
+}
+/* Utilities */
+.resume2 .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+.resume2 .muted {
+  color: #666;
+  font-size: 8px;
+}
+/* Jobs */
+.resume2 .job {
+  margin-bottom: 20px;
+}
+.resume2 .job h3 {
+  margin: 0 0 6px;
+  font-size: 8px;
+  font-weight: 700;
+}
+.resume2 .job .meta {
+  font-size: 8px;
+  color: #666;
+  margin: 0 0 6px;
+}
+.resume2 .job-header .left {
+  max-width: 70%;
+}
+.resume2 .job-header .right {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.resume2 .job-header {
+  font-size: 8px;
+}

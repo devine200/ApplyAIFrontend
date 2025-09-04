@@ -9,7 +9,7 @@ import {
   ContentBlock,
 } from "draft-js";
 import Toolbar from "./Toolbar";
-// import "../../../styles/DraftEditor.css";
+import "../../../styles/DraftEditor.css";
 
 const DraftEditor = () => {
   const [editorState, setEditorState] = useState(
@@ -143,7 +143,7 @@ const DraftEditor = () => {
           blockStyleFn={myBlockStyleFn}
           onChange={(editorState) => {
             const contentState = editorState.getCurrentContent();
-            console.log(convertToRaw(contentState));
+            console.log({state: convertFromRaw(convertToRaw(contentState))});
             setEditorState(editorState);
           }}
         />

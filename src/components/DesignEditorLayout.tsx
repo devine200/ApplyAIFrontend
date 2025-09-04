@@ -1,10 +1,13 @@
 import React from "react";
-import type { EditorTabEnum } from "../types";
+import type { DesignField, EditorTabEnum } from "../types";
 import EditorTab from "./EditorTab";
 import LayoutDesignSelector from "./DesignEditor/LayoutDesignSelector";
 import StyleSelector from "./DesignEditor/StyleSelector";
 import DesignEditorForm from "./DesignEditor/DesignEditorSection";
 import SkillLayoutSelector from "./DesignEditor/SkillLayoutSelector";
+import type { RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { selectSkillLayout, updateLayoutFieldSelection, updateTextFormatFieldSelection, updateContentFormatFieldSelection } from "../store/DesignEditor/designEditor";
 
 interface ContentEditorLayoutProps {
   activeTab: EditorTabEnum;
@@ -15,54 +18,76 @@ const DesignEditorLayout = ({
   activeTab,
   onTabChange,
 }: ContentEditorLayoutProps) => {
+  const dispatch = useDispatch();
+  const { resumeTemplates, selectedTemplateIdx } = useSelector(
+    (state: RootState) => state.designEditor
+  );
+  const { layoutFields, textFormatFields, contentFormatFields } =
+    resumeTemplates[selectedTemplateIdx];
+
+  const handleSkillsLayoutChange = (isListed: boolean) => {
+    dispatch(selectSkillLayout(isListed))
+  }
+
+  const handleLayoutFieldSelection = (fieldIdx: number, optionIdx: number) => {
+    dispatch(updateLayoutFieldSelection({ fieldIdx, selectedOptionIdx: optionIdx }))
+  }
+
+  const handleTextFormatFieldSelection = (fieldIdx: number, optionIdx: number) => {
+    dispatch(updateTextFormatFieldSelection({ fieldIdx, selectedOptionIdx: optionIdx }))
+  }
+
+  const handleContentFormatFieldSelection = (fieldIdx: number, optionIdx: number) => {
+    dispatch(updateContentFormatFieldSelection({ fieldIdx, selectedOptionIdx: optionIdx }))
+  }
+
   return (
     <div className="layout-section">
       <EditorTab activeTab={activeTab} onTabChange={onTabChange} />
       <div className="design-editor-section">
         <DesignEditorForm title="Layout & Design" hasBottomBorder={true}>
           <LayoutDesignSelector />
-          <StyleSelector
-            styleName="Margin Size"
-            styleOptions={["Small", "Medium", "Large"]}
-            activeIndex={1}
-          />
-          <StyleSelector
-            styleName="Page Size"
-            styleOptions={["Small", "Medium", "Large"]}
-            activeIndex={1}
-          />
+          {layoutFields.map(
+            ({ name, options, selectedOptionIdx }: DesignField, index) => (
+              <StyleSelector
+                fieldIdx={index}
+                styleName={name}
+                styleOptions={options}
+                activeIndex={selectedOptionIdx}
+                onSelection={handleLayoutFieldSelection}
+                />
+              )
+            )}
         </DesignEditorForm>
 
         <DesignEditorForm title="Font & Text Formatting" hasBottomBorder={true}>
-          <StyleSelector
-              styleName="Font Family"
-              styleOptions={["Small", "Medium", "Large"]}
-              activeIndex={1}
-            />
-          <StyleSelector
-              styleName="Font Size"
-              styleOptions={["Small", "Medium", "Large"]}
-              activeIndex={1}
-            />
-          <StyleSelector
-              styleName="Line Height"
-              styleOptions={["Small", "Medium", "Large"]}
-              activeIndex={1}
-            />
+          {textFormatFields.map(
+            ({ name, options, selectedOptionIdx }: DesignField, index) => (
+              <StyleSelector
+              fieldIdx={index}
+              styleName={name}
+              styleOptions={options}
+              activeIndex={selectedOptionIdx}
+              onSelection={handleTextFormatFieldSelection}
+              />
+            )
+          )}
         </DesignEditorForm>
 
         <DesignEditorForm title="Content Format">
-          <StyleSelector
-              styleName="Format Date"
-              styleOptions={["Left", "Center", "Right"]}
-              activeIndex={0}
-            />
-          <StyleSelector
-              styleName="Bullet Icon"
-              styleOptions={["Black", "Gray", "White"]}
-              activeIndex={0}
-            />
-          <SkillLayoutSelector isListed={true}/>
+          {contentFormatFields.map(
+            ({ name, options, selectedOptionIdx }: DesignField, index) => name.toLowerCase() !== "skills layout" ? (
+              <StyleSelector
+                fieldIdx={index}
+                styleName={name}
+                styleOptions={options}
+                activeIndex={selectedOptionIdx}
+                onSelection={handleContentFormatFieldSelection}
+                />
+              ) : (
+                <SkillLayoutSelector isListed={options[selectedOptionIdx] === "listed"} onSelection={handleSkillsLayoutChange}/>
+              )
+            )}
         </DesignEditorForm>
       </div>
     </div>

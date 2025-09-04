@@ -1,13 +1,18 @@
 import React from 'react'
 import ContentItem from './UtilComponents/ContentItem'
 
-const EducationContentItem = () => {
+interface EducationContentItemProps {
+    school: string,
+    course: string,
+    relevantCourses: string,
+}
 
+const EducationContentItem = ({school, course, relevantCourses}: EducationContentItemProps) => {
     return (
-        <ContentItem title="Nnamdi Azikiwe University">
+        <ContentItem title={school}>
             <div className="education-content-item-body">
-                <label htmlFor="extra-info">Electronic and Computer Engineering</label>
-                <textarea name="extra-info" id="extra-info" className="highlight-input" placeholder="Ex. Relevant course work: Algorthims"></textarea>
+                <label htmlFor="extra-info">{course}</label>
+                <textarea name="extra-info" id="extra-info" className="highlight-input" placeholder="Ex. Relevant course work: Algorthims" defaultValue={relevantCourses}></textarea>
             </div>
         </ContentItem>
     )

@@ -5,22 +5,24 @@ import AIHelperBtn from "../UtilComponents/AIHelperBtn";
 import AddExperienceBtn from "../UtilComponents/AddExperienceBtn";
 import ContentItem from "../UtilComponents/ContentItem";
 
-const ExperienceItemForm = () => {
+interface ExperienceItemFormProps{
+  jobTitle: string;
+  company: string;
+  responsibilities: string[];
+}
+
+const ExperienceItemForm = ({jobTitle, company, responsibilities}: ExperienceItemFormProps) => {
   return (
-    <ContentItem title="Tradable">
+    <ContentItem title={company}>
       <div>
         <div className="exp-role">
-          <h4>Lead Full-Stack Web3 Engineer</h4>
+          <h4>{jobTitle}</h4>
           <button className="icon-btn pointer">
             <img src={EditIcon} alt="edit icon" />
           </button>
         </div>
         <div>
-          <ExperienceItemInput />
-          <ExperienceItemInput />
-          <ExperienceItemInput />
-          <ExperienceItemInput />
-          <ExperienceItemInput />
+          {responsibilities && responsibilities.map((responsibility) => <ExperienceItemInput responsibility={responsibility} />)}
         </div>
         <AddExperienceBtn />
         <AIHelperBtn />

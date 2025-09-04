@@ -1,116 +1,39 @@
-import React, { useEffect, useState } from "react";
-import ResumeImage from "../../assets/icons/resume.png";
-import ResumeLayoutSelection, {
-  type ColorOption,
-} from "./ResumeLayoutSelection";
+import React from "react";
+import ResumeLayoutSelection from "./ResumeLayoutSelection";
+import type { RootState } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { selectTemplateColor, selectTemplateLayout } from "../../store/DesignEditor/designEditor";
 
 const LayoutDesignSelector = () => {
-    const [activeLayoutIndex, setActiveLayoutIndex] = useState<number>(0);
-    const [activeColorIndex, setActiveColorIndex] = useState<number>(2);
-
+    const dispatch = useDispatch();
     const handleLayoutSelection = (index: number) => {
-        setActiveLayoutIndex(index);
+        dispatch(selectTemplateLayout(index));
     }
 
     const handleColorSelection = (index: number) => {
-        setActiveColorIndex(index);
+        dispatch(selectTemplateColor(index));
     }
 
-    const [layoutSelections, setLayoutSelections] = useState([
-        {
-        templateName: "Classic",
-        templateImg: ResumeImage,
-        isActive: false,
-        colorOptions: [
-            { color: "red", isActive: false },
-            { color: "green", isActive: false },
-            { color: "blue", isActive: true },
-            { color: "purple", isActive: false },
-        ],
-        },
-        {
-        templateName: "Classic",
-        templateImg: ResumeImage,
-        isActive: false,
-        colorOptions: [
-            { color: "red", isActive: false },
-            { color: "green", isActive: false },
-            { color: "blue", isActive: true },
-            { color: "purple", isActive: false },
-        ],
-        },
-        {
-        templateName: "Classic",
-        templateImg: ResumeImage,
-        isActive: true,
-        colorOptions: [
-            { color: "red", isActive: false },
-            { color: "green", isActive: false },
-            { color: "blue", isActive: true },
-            { color: "purple", isActive: false },
-        ],
-        },
-        {
-        templateName: "Classic",
-        templateImg: ResumeImage,
-        isActive: false,
-        //   colorOptions: [
-        //     { color: "red", isActive: false },
-        //     { color: "green", isActive: false },
-        //     { color: "blue", isActive: true },
-        //     { color: "purple", isActive: false },
-        //   ],
-        },
-    ]);
-
-  useEffect(() => {
-        setLayoutSelections((prevSelections) =>
-        prevSelections.map((selection, index) => ({
-            ...selection,
-            isActive: index === activeLayoutIndex,
-        }))
-        );
-    }, [activeLayoutIndex]);
-
-  useEffect(() => {
-        setLayoutSelections((prevSelections) =>
-            prevSelections.map((selection, index) => {
-                if (index === activeLayoutIndex && selection.colorOptions) {
-                    selection.colorOptions = selection.colorOptions.map(
-                        (colorOption, colorIndex) => ({
-                            ...colorOption,
-                            isActive: colorIndex === activeColorIndex,
-                        })
-                    );
-                }
-                return selection;
-            })
-        );
-    }, [activeLayoutIndex, activeColorIndex]);
+    const { resumeTemplates, selectedTemplateIdx } = useSelector((state: RootState) => state.designEditor);
 
   return (
         <div className="layout-selector">
-        {layoutSelections.map(
-            ({ templateName, isActive, templateImg, colorOptions }, index) => (
-            <ResumeLayoutSelection
-                index={index}
-                templateName={templateName}
-                isActive={isActive}
-                templateImg={templateImg}
-                onSelect={handleLayoutSelection}
-                onColorSelect={handleColorSelection}
-                colorOptions={
-                colorOptions
-                    ? (colorOptions as [
-                        ColorOption,
-                        ColorOption,
-                        ColorOption,
-                        ColorOption
-                    ])
-                    : undefined
-                }
-            />
-            )
+        {resumeTemplates.map(
+            ({ templateSelection }, index) => {
+                const { name, templateImg, colors, selectedColorIdx } = templateSelection
+                return (
+                    <ResumeLayoutSelection
+                        index={index}
+                        isActive={index === selectedTemplateIdx}
+                        templateName={name}
+                        templateImg={templateImg}
+                        onSelect={handleLayoutSelection}
+                        onColorSelect={handleColorSelection}
+                        colorOptions={colors as [string, string, string, string]}
+                        activeColorIdx={selectedColorIdx || 0}
+                    />
+                )
+            }
         )}
         </div>
     );

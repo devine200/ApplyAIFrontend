@@ -1,0 +1,69 @@
+.resume3.page {
+  font-family: "Inter", sans-serif;
+  /*width: 800px;*/
+  margin: 0px auto;
+  padding: 40px 20px;
+  background: #fff;
+  color: #000;
+  line-height: 1.3;
+  font-size: 10px;
+}
+.resume3 h1 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+.resume3 .contact {
+  font-size: 10px;
+  margin: 10px 0 20px;
+  text-align: center;
+}
+.resume3 .grid {
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  gap: 20px;
+}
+.resume3 .left {
+  font-weight: 700;
+  font-size: 12px;
+}
+.resume3 .section:not(.section:last-of-type) {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+.resume3 h3 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+}
+.resume3 p {
+  margin: 4px 0;
+}
+.resume3 .muted {
+  color: #555;
+}
+.resume3 ul {
+  margin: 5px 0 15px 20px;
+  padding-left: 5px;
+}
+.resume3 li {
+  margin-bottom: 6px;
+}
+.resume3 .role {
+  font-style: italic;
+  font-weight: 500;
+}
+.resume3 .right-align {
+  float: right;
+  font-size: 10px;
+}
+.resume3 strong {
+  font-weight: 600;
+}
+.resume3 .divider {
+  border-bottom: 1px solid #ccc;
+  margin: 20px 0;
+  padding: 20px;
+}

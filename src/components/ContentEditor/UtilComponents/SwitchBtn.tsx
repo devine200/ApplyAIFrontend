@@ -2,13 +2,14 @@ import "../../../styles/SwitchBtn.css"
 
 interface SwitchBtnProps {
     label: string;
+    isChecked?: boolean;
     handleClick: () => void;
 }
-const SwitchBtn = ({label, handleClick}: SwitchBtnProps) => {
+const SwitchBtn = ({label, handleClick, isChecked}: SwitchBtnProps) => {
   return (
     <div className="switch-btn">
       <label className="toggle" aria-label="Airplane mode" onClick={handleClick}>
-        <input type="checkbox" role="switch"/>
+        <input type="checkbox" role="switch" checked={isChecked}/>
         <span className="track"></span>
         <span className="thumb"></span>
       </label>

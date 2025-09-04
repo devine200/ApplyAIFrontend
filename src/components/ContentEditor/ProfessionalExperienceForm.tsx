@@ -1,22 +1,28 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import ContentEditor from "./UtilComponents/ContentEditor";
 import AddSection from "./UtilComponents/AddSection";
 import ExperienceItemForm from "./ExperienceItem/ExperienceItemForm";
+import type { RootState } from "../../store/store";
 
 const ProfessionalExperienceForm = () => {
+  const {isEditable, isDraggable, title, addSectionParams, experiences} = useSelector((state: RootState) => state.contentEditor.professionalExperiences);
+  
   return (
     <ContentEditor
-      isEditable={true}
-      isDraggable={true}
-      title="Professional Experience"
+      isEditable={isEditable}
+      isDraggable={isDraggable}
+      title={title}
     >
       <div>
         <AddSection
-          title="Want to add a new experience?"
-          btnName="Add Experience"
-          description="Add them to your Simplify Profile. You can selectively hide/show relevant experiences for each resume you create."
+          title={addSectionParams!.question}
+          btnName={addSectionParams!.btnName}
+          description={addSectionParams!.description}
         />
-        <ExperienceItemForm />
+        {experiences && experiences.map(({jobTitle, company, responsibilities}) => (
+          <ExperienceItemForm jobTitle={jobTitle} company={company} responsibilities={responsibilities} />
+        ))}
       </div>
     </ContentEditor>
   );

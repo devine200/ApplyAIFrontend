@@ -6,7 +6,7 @@ interface IconBtnProps {
 
 const IconBtn = ({handleClick, btnIcon, label}:IconBtnProps) => {
   return (
-    <button className="icon-btn view-btn" onClick={handleClick}><img src={btnIcon} alt="view icon" /><span className="label">{label}</span></button>
+    <button className="icon-btn view-btn pointer" onClick={handleClick}><img src={btnIcon} alt="view icon" /><span className="label">{label}</span></button>
   )
 }
 

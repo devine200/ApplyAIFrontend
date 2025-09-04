@@ -8,14 +8,14 @@
 .editor-layout {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 20px;
 }
 
 .layout-section {
     min-width: calc(50vw - 60px);
     height: 100vh;
     overflow-y: scroll;
-    padding: 20px;
+    padding: 10px;
     padding-bottom: 80px;
     font-family: "circlar std";
     color: rgb(38,49,55);
@@ -151,6 +151,7 @@ button.toggle-form:hover {
     border: 1px solid #d2d4d6;
     box-shadow: 0 1px 2px 0 #eaecee;
     font: inherit;
+    font-size: 14px;
     color: inherit;
 }
 
@@ -323,7 +324,7 @@ button.toggle-form:hover {
 .exp-item-input {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 5px;
     width: 100%;
     margin-top: 10px;
@@ -420,6 +421,10 @@ button.toggle-form:hover {
 
 .skill-layout.bottom-border {
     border-bottom: 1px solid #cbc9c9;
+}
+
+.skill-category-section {
+    margin-bottom: 30px;
 }
 
 .editor-tab .tabs-holder {
@@ -596,7 +601,7 @@ button.toggle-form:hover {
 
 .design-editor-form {
     padding: 20px 0px;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
 }
 
 .design-editor-form.bottom-border {
@@ -694,7 +699,7 @@ button.toggle-form:hover {
     display: flex;
     flex-direction: column;
     gap: 25px;
-    padding: 20px 0px;
+    padding: 10px 0px;
 }
 
 .style-select-form {
@@ -737,7 +742,7 @@ button.toggle-form:hover {
     border: 1px solid #e8e9eb;
     padding: 25px;
     border-radius: 10px;
-    width: fit-content;
+    width: 40%;
     margin-top: 10px;
 }
 
@@ -745,7 +750,6 @@ button.toggle-form:hover {
     padding: 15px;
     margin: 0px;
     margin-top: 10px;
-    width: fit-content;
     background: #f8fafc;
     border: 1px solid #e8e9eb;
     border-radius: 10px;
@@ -784,4 +788,36 @@ button.toggle-form:hover {
 .skill-layout-selection-item .sample-body .selection-heading span.check-holder img {
     width: 8px;
     height: 8px;
+}
+
+/*
+/////////////////////////////////////////////////
+// Design Editor Styles Ends Here
+/////////////////////////////////////////////////
+*/
+
+
+/*
+/////////////////////////////////////////////////
+// PDF Preview Styles Starts Here
+/////////////////////////////////////////////////
+*/
+
+.pdf-preview {
+    background: #dff9ff;
+    height: fit-content;
+    margin: 40px 0px;
+    padding: 20px 1rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.page {
+    width: 612px;
+    /* height: 792px; */
+    overflow-y: hidden;
+    box-sizing: border-box;
+    text-align: left;
+    padding: 20px 10px;
 }

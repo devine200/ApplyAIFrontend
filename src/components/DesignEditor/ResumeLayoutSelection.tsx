@@ -2,17 +2,13 @@ import React from "react";
 import ResumeImage from "../../assets/icons/resume.png";
 import CheckIcon from "../../assets/icons/check.png";
 
-export interface ColorOption {
-  color: string;
-  isActive: boolean;
-}
-
 interface ResumeLayoutSelectionProps {
   index: number;
-  colorOptions?: [ColorOption, ColorOption, ColorOption, ColorOption];
-  isActive?: boolean;
+  colorOptions?: [string, string, string, string];
   templateName: string;
   templateImg: string;
+  activeColorIdx?: number;
+  isActive: boolean;
   onSelect?: (index: number) => void;
   onColorSelect?: (index: number) => void;
 }
@@ -21,10 +17,11 @@ const ResumeLayoutSelection = ({
   index,
   templateName,
   templateImg,
-  isActive,
   colorOptions,
   onSelect,
   onColorSelect,
+  activeColorIdx,
+  isActive,
 }: ResumeLayoutSelectionProps) => {
   const handleSelect = () => {
     if (!onSelect) return;
@@ -49,9 +46,9 @@ const ResumeLayoutSelection = ({
       />
       {colorOptions && isActive ? (
         <div className="floating-color-selector">
-          {colorOptions.map(({color, isActive}, index) => (
+          {colorOptions.map((color, index) => (
             <button
-              className={`color-selection pointer ${isActive ? "active-color" : ""}`}
+              className={`color-selection pointer ${activeColorIdx === index ? "active-color" : ""}`}
               style={{ background: color }}
               onClick={()=> {
                 handleColorSelect(index);
