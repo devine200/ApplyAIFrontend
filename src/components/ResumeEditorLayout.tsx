@@ -1,20 +1,18 @@
 import { EditorTabEnum } from "../types"
-import { useState } from "react"
 
 import ContentEditorLayout from './ContentEditorLayout'
 import PDFPreviewLayout from './PDFPreviewLayout'
 import DesignEditorLayout from "./DesignEditorLayout"
 import '../styles/ResumeEditor.css'
+import type { RootState } from "../store/store"
+import { useSelector } from "react-redux"
 
 const ResumeEditorLayout = () => {
-  const [activeEditorTab, setActiveEditorTab] = useState<EditorTabEnum>(EditorTabEnum.CONTENT)
-  const handleTabChange = (tab: EditorTabEnum) => {
-    setActiveEditorTab(tab)
-  }
+  const { activeTab } = useSelector((state:RootState) => state.resumeEditor)
   
   return (
     <div className="editor-layout">
-        {activeEditorTab === EditorTabEnum.CONTENT ? <ContentEditorLayout activeTab={activeEditorTab} onTabChange={handleTabChange}/>: <DesignEditorLayout activeTab={activeEditorTab} onTabChange={handleTabChange}/>}
+        {activeTab === EditorTabEnum.CONTENT ? <ContentEditorLayout />: <DesignEditorLayout />}
         <PDFPreviewLayout />
     </div>
   )

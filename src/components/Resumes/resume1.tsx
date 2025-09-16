@@ -1,241 +1,361 @@
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import type { ResumeProps } from "../../types";
 
-const Resume1 = () => {
+const Resume1 = ({
+  handleEditSection,
+  getDesignField,
+  resumeTemplate,
+}: ResumeProps) => {
+  const {
+    name,
+    header,
+    professionalSummary,
+    education,
+    professionalExperiences,
+    outsideExperiences,
+    skills,
+    certification,
+  } = useSelector((state: RootState) => state.contentEditor);
+
+  /* Extracting design styles */
+  const { contentFormatFields, textFormatFields, layoutFields } =
+    resumeTemplate;
+  const skillLayoutStyle =
+    getDesignField(contentFormatFields[1]) !== "listed" ? "not-listed" : "";
+  const bulletIconStyle = `list-${
+    getDesignField(contentFormatFields[0]).toLowerCase().split(" ")[1]
+  }`;
+  const fontFamilyStyle = getDesignField(textFormatFields[0]);
+  const fontSizeStyle = `fs${getDesignField(textFormatFields[1])}`;
+  const lineHeightStyle = getDesignField(textFormatFields[2]);
+  const nameCapitalizedStyle =
+    getDesignField(textFormatFields[3]) === "true" ? "uppercase" : "capitalize";
+  const marginMetrics = {
+    small: "20px",
+    medium: "30px",
+    large: "40px",
+  };
+  const marginSizeStyle =
+    marginMetrics[getDesignField(layoutFields[1]).toLowerCase()];
+  const headerAlignStyle = `${getDesignField(
+    layoutFields[0]
+  ).toLowerCase()}-align`;
+
   return (
-    <div className="resume1-body page">
+    <div
+      className={`resume1-body page ${fontSizeStyle} ${skillLayoutStyle} ${bulletIconStyle} ${headerAlignStyle}`}
+      style={{
+        fontFamily: fontFamilyStyle,
+        lineHeight: lineHeightStyle,
+        paddingLeft: marginSizeStyle,
+        paddingRight: marginSizeStyle,
+      }}
+    >
       <div className="sheet" role="main">
         <div className="header">
-          <h1>Your Name</h1>
-          <div className="contact">
-            <span className="hbr">Product Manager</span>
-            <span className="hbr">City, Country</span>
-            <span className="hbr">you@example.com</span>
-            <span className="hbr">(555) 555-5555</span>
-            <span className="hbr">linkedin.com/in/yourname</span>
-            <span className="hbr">linkedin.com/in/yourname</span>
-            <span className="hbr">linkedin.com/in/yourname</span>
+          <h1 style={{ textTransform: nameCapitalizedStyle }}>{name}</h1>
+          <div
+            className="contact editable-section"
+            onClick={() => {
+              console.log("clicking");
+              handleEditSection(header.elementID);
+            }}
+          >
+            <span className="hbr">{header.title}</span>
+            {!header.location.isHidden && (
+              <span className="hbr">{header.location.value}</span>
+            )}
+            {header.contactInfos
+              .filter(({ isHidden }) => !isHidden)
+              .map((contact) => (
+                <span key={uuidv4()} className="hbr">
+                  {!header.showFullUrls
+                    ? contact.name.toLowerCase() === "email" ||
+                      contact.name.toLowerCase() === "phone number"
+                      ? contact.value
+                      : contact.name
+                    : contact.value}
+                </span>
+              ))}
           </div>
         </div>
 
         <section className="section" aria-label="summary">
-          <h2>Professional Summary</h2>
-          <p>
-            Experienced product manager with a track record of launching
-            data-driven features that increase retention and revenue.
-            Comfortable with analytics, stakeholder management, and agile
-            delivery. Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Exercitationem suscipit odit repellendus quod voluptatem illum?
-            Iusto consequatur et illum repellendus. Odio consequatur earum
-            veritatis iste nesciunt nulla voluptates assumenda hic.
+          <h2
+            className="editable-section"
+            onClick={() => {
+              handleEditSection(professionalSummary.elementID);
+            }}
+          >
+            {professionalSummary.title}
+          </h2>
+          <p
+            className="editable-section"
+            onClick={() => {
+              handleEditSection(professionalSummary.contentElementID);
+            }}
+          >
+            {professionalSummary.content}
           </p>
         </section>
 
         <section className="section" aria-label="education">
-          <h2>Education</h2>
-          <div className="edu-section">
-            <div className="edu-school-info">
-              <span className="school-name">University Name</span>
-              <span className="meta">Course Studied</span>
-            </div>
+          <h2
+            className="editable-section"
+            onClick={() => {
+              handleEditSection(education.elementID);
+            }}
+          >
+            {education.title}
+          </h2>
+          {education.certifications.map(
+            ({
+              school,
+              course,
+              degree,
+              duration,
+              relevantCourses,
+              elementID,
+            }) => (
+              <div
+                className="edu-section editable-section"
+                key={uuidv4()}
+                onClick={(e) => {
+                  console.log(elementID);
+                  e.stopPropagation();
+                  handleEditSection(elementID);
+                }}
+              >
+                <div className="edu-school-info">
+                  <span className="school-name">{school}</span>
+                  <span className="meta">
+                    {degree}, {course}
+                  </span>
+                  {relevantCourses && (
+                    <span className="meta">{relevantCourses}</span>
+                  )}
+                </div>
 
-            <div>
-              <span className="edu-duration">September 2017 - June 2021</span>
+                <div>
+                  <span className="edu-duration">{duration}</span>
+                </div>
+              </div>
+            )
+          )}
+        </section>
+
+        {certification.content && (
+          <section className="section" aria-label="education">
+            <h2
+              className="editable-section"
+              onClick={() => {
+                handleEditSection(certification.elementID);
+              }}
+            >
+              {certification.title}
+            </h2>
+            <div
+              className="edu-section editable-section"
+              key={uuidv4()}
+              onClick={() => {
+                handleEditSection(certification.contentElementID);
+              }}
+            >
+              {certification.content}
             </div>
-          </div>
+          </section>
+        )}
+
+        <section className="section" aria-label="experience">
+          <h2
+            className="editable-section"
+            onClick={() => {
+              handleEditSection(professionalExperiences.elementID);
+            }}
+          >
+            {professionalExperiences.title}
+          </h2>
+
+          {professionalExperiences.experiences.map(
+            ({
+              jobTitle,
+              company,
+              duration,
+              responsibilities,
+              elementID,
+              jobTitleElementID,
+            }) => {
+              return (
+                <div
+                  className="exp-section editable-section"
+                  key={uuidv4()}
+                  onClick={() => {
+                    handleEditSection(elementID);
+                  }}
+                >
+                  <div className="exp-header">
+                    <div>
+                      <div className="role">{company}</div>
+                      <div
+                        className="meta editable-section"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditSection(jobTitleElementID);
+                        }}
+                      >
+                        {jobTitle}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="role">City, Country</div>
+                      <div className="meta">{duration}</div>
+                    </div>
+                  </div>
+                  <ul>
+                    {responsibilities.filter(({isHidden}) => !isHidden).map(({ value, elementID }) => (
+                      <li
+                        className="editable-section"
+                        key={uuidv4()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditSection(elementID);
+                        }}
+                      >
+                        {value}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            }
+          )}
         </section>
 
         <section className="section" aria-label="experience">
-          <h2>Work Experience</h2>
+          <h2
+            className="editable-section"
+            onClick={() => {
+              handleEditSection(outsideExperiences.elementID);
+            }}
+          >
+            {outsideExperiences.title}
+          </h2>
 
-          <div className="exp-section">
-            <div className="exp-header">
-              <div>
-                <div className="role">Company A</div>
-                <div className="meta">Senior Product Manager</div>
-              </div>
+          {outsideExperiences.experiences.map(
+            ({
+              jobTitle,
+              company,
+              duration,
+              responsibilities,
+              elementID,
+              jobTitleElementID,
+            }) => {
+              return (
+                <div
+                  className="exp-section editable-section"
+                  key={uuidv4()}
+                  onClick={() => {
+                    handleEditSection(elementID);
+                  }}
+                >
+                  <div className="exp-header">
+                    <div>
+                      <div className="role">{company}</div>
+                      <div
+                        className="meta editable-section"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditSection(jobTitleElementID);
+                        }}
+                      >
+                        {jobTitle}
+                      </div>
+                    </div>
 
-              <div>
-                <div className="role">City, Country</div>
-                <div className="meta">Jun 2021 – Present</div>
-              </div>
-            </div>
-            <ul>
-              <li>
-                Led a cross-functional team to deliver Y; improved NPS by 12
-                points.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-            </ul>
-          </div>
-
-          <div className="exp-section">
-            <div className="exp-header">
-              <div>
-                <div className="role">Company A</div>
-                <div className="meta">Senior Product Manager</div>
-              </div>
-
-              <div>
-                <div className="role">City, Country</div>
-                <div className="meta">Jun 2021 – Present</div>
-              </div>
-            </div>
-            <ul>
-              <li>
-                Led a cross-functional team to deliver Y; improved NPS by 12
-                points.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-            </ul>
-          </div>
-
-          <div className="exp-section">
-            <div className="exp-header">
-              <div>
-                <div className="role">Company A</div>
-                <div className="meta">Senior Product Manager</div>
-              </div>
-
-              <div>
-                <div className="role">City, Country</div>
-                <div className="meta">Jun 2021 – Present</div>
-              </div>
-            </div>
-            <ul>
-              <li>
-                Led a cross-functional team to deliver Y; improved NPS by 12
-                points.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-            </ul>
-          </div>
-
-          <div className="exp-section">
-            <div className="exp-header">
-              <div>
-                <div className="role">Company A</div>
-                <div className="meta">Senior Product Manager</div>
-              </div>
-
-              <div>
-                <div className="role">City, Country</div>
-                <div className="meta">Jun 2021 – Present</div>
-              </div>
-            </div>
-            <ul>
-              <li>
-                Led a cross-functional team to deliver Y; improved NPS by 12
-                points.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-            </ul>
-          </div>
-
-          <div className="exp-section">
-            <div className="exp-header">
-              <div>
-                <div className="role">Company A</div>
-                <div className="meta">Senior Product Manager</div>
-              </div>
-
-              <div className="exp-meta">
-                <div className="role">City, Country</div>
-                <div className="meta">Jun 2021 – Present</div>
-              </div>
-            </div>
-            <ul>
-              <li>
-                Led a cross-functional team to deliver Y; improved NPS by 12
-                points.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-              <li>
-                Introduced A/B testing process that raised conversion by 9%.
-              </li>
-            </ul>
-          </div>
+                    <div>
+                      <div className="role">City, Country</div>
+                      <div className="meta">{duration}</div>
+                    </div>
+                  </div>
+                  <ul>
+                    {responsibilities.filter(({isHidden}) => !isHidden).map(({ value, elementID }) => (
+                      <li
+                        className="editable-section"
+                        key={uuidv4()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditSection(elementID);
+                        }}
+                      >
+                        {value}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            }
+          )}
         </section>
 
         <section className="section" aria-label="skills">
-          <h2>Skills</h2>
-          <div className="skill-section">
-            <span className="topic">Topic:</span>
-            <ul className="skills">
-              <li>Product Management,</li>
-              <li>Agile Methodologies,</li>
-              <li>Data Analysis,</li>
-              <li>Stakeholder Management,</li>
-              <li>A/B Testing,</li>
-              <li>Cross-functional Team Leadership</li>
-            </ul>
-          </div>
+          <h2
+            className="editable-section"
+            onClick={() => {
+              handleEditSection(skills.elementID);
+            }}
+          >
+            Skills
+          </h2>
+          {!skills.isSkillsHidden && skills.skills.map(({ categoryName, skills, elementID }) => (
+            <div
+              className="skill-section editable-section"
+              key={uuidv4()}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditSection(elementID);
+              }}
+            >
+              <span className="topic">{categoryName}:</span>
+              <ul className="skills">
+                {skills.map((skill) => (
+                  <li key={uuidv4()}>{skill},</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          {skills.languages.length > 0 && !skills.isLanguageHidden && (
+            <div
+              className="skill-section editable-section"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditSection(skills.languagesElementID);
+              }}
+            >
+              <span className="topic">Languages:</span>
+              <ul className="skills">
+                {skills.languages.map((language) => (
+                  <li key={uuidv4()}>{language},</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {skills.interests && !skills.isInterestsHidden && (
+            <div
+              className="skill-section editable-section"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditSection(skills.interestsElementID);
+              }}
+            >
+              <span className="topic">Interests:</span>
+              <p className="skills">{skills.interests}</p>
+            </div>
+          )}
         </section>
       </div>
     </div>

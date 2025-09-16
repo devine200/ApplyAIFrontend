@@ -3,6 +3,7 @@ import ResumeLayoutSelection from "./ResumeLayoutSelection";
 import type { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTemplateColor, selectTemplateLayout } from "../../store/DesignEditor/designEditor";
+import { v4 as uuidv4 } from 'uuid';
 
 const LayoutDesignSelector = () => {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const LayoutDesignSelector = () => {
                 const { name, templateImg, colors, selectedColorIdx } = templateSelection
                 return (
                     <ResumeLayoutSelection
+                        key={uuidv4()}
                         index={index}
                         isActive={index === selectedTemplateIdx}
                         templateName={name}

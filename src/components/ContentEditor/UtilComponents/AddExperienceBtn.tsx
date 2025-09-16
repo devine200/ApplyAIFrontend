@@ -1,11 +1,21 @@
-import React from 'react'
+import React from "react";
 
-const AddExperienceBtn = () => {
-  return (
-    <div className="add-btn-holder">
-        <button className="add-exp-item-btn pointer">+ Add Experience Item</button>
-    </div>
-  )
+interface AddExperienceBtnProps {
+  handleClick: () => void;
 }
 
-export default AddExperienceBtn
+const AddExperienceBtn = ({ handleClick }: AddExperienceBtnProps) => {
+  
+  return (
+    <div className="add-btn-holder">
+      <button
+        className="add-exp-item-btn pointer"
+        onClick={handleClick}
+      >
+        + Add Experience Item
+      </button>
+    </div>
+  );
+};
+
+export default AddExperienceBtn;

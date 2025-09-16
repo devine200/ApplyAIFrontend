@@ -1,6 +1,7 @@
 import React from "react";
 import ResumeImage from "../../assets/icons/resume.png";
 import CheckIcon from "../../assets/icons/check.png";
+import { v4 as uuidv4 } from "uuid";
 
 interface ResumeLayoutSelectionProps {
   index: number;
@@ -50,6 +51,7 @@ const ResumeLayoutSelection = ({
             <button
               className={`color-selection pointer ${activeColorIdx === index ? "active-color" : ""}`}
               style={{ background: color }}
+              key={uuidv4()}
               onClick={()=> {
                 handleColorSelect(index);
               }}

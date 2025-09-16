@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import CounterReducer from "./counter/counterSlice";
 import ContentEditorReducer from "./ContentEditor/contentEditor";
 import DesignEditorReducer from "./DesignEditor/designEditor";
+import ResumeEditorReducer from "./ResumeEditor/resumeEditor";
 
 export const store = configureStore({
     reducer: {
         counter: CounterReducer,
         contentEditor: ContentEditorReducer,
         designEditor: DesignEditorReducer, 
+        resumeEditor: ResumeEditorReducer
     }
 })
 

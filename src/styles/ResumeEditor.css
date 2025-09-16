@@ -489,7 +489,7 @@ button.toggle-form:hover {
     gap: 15px;
 }
 
-.skills-holder .skill-item {
+.skill-item {
     background: #12A1C0;
     color: white;
     width: fit-content;
@@ -501,7 +501,7 @@ button.toggle-form:hover {
     font-size: 14px;
 }
 
-.skills-holder .skill-item .icon-btn {
+.skill-item .icon-btn {
     position: relative;
     top: 3px;
 }
@@ -815,9 +815,102 @@ button.toggle-form:hover {
 
 .page {
     width: 612px;
-    /* height: 792px; */
+    min-height: 792px;
     overflow-y: hidden;
     box-sizing: border-box;
     text-align: left;
     padding: 20px 10px;
+}
+
+/* resume page customization styles */
+
+.page.not-listed ul {
+    list-style: none !important;
+}
+
+.page.list-disc:not(.not-listed) ul {
+    list-style-type: disc !important;
+}
+
+.page.list-dash:not(.not-listed) ul li::marker {
+    content: "-";
+    font-size: inherit;
+}
+
+.page.list-arrow li,
+.page.list-dash li,
+.page.list-disc li {
+    padding-left: 2px !important;
+}
+
+.page.list-arrow:not(.not-listed) ul li::marker {
+    content: "»";
+    font-size: inherit;
+}
+
+.page.fs7px {
+    --font-size: 7px;
+}
+
+.page.fs8px {
+    --font-size: 8px;
+}
+
+.page.fs9px{
+    --font-size: 9px;
+}
+
+.page.fs10px {
+    --font-size: 10px;
+}
+
+.page.fs11px {
+    --font-size: 11px;
+}
+
+.page.fs12px {
+    --font-size: 12px;
+}
+
+.page.fs14px {
+    --font-size: 14px;
+}
+
+
+.editable-section:hover {
+    background: #dff9ff94 !important;
+    cursor: pointer;
+}
+
+.editable-section:hover:has(.editable-section:hover) {
+    background: inherit !important;
+}
+
+.resume4 .sidebar .editable-section:hover {
+    box-sizing: border-box;
+    padding: 0px 5px 5px 5px;
+}
+
+.resume2 .header .editable-section:hover,
+.resume4 .sidebar .editable-section:hover * {
+    color: #000 !important;
+}
+
+.resume3 .left span.editable-section {
+    display: inline-block;
+    width: 100%;
+}
+
+.edit-selected {
+    animation: selection-fx 1s 2;
+}
+
+@keyframes selection-fx {
+    from {
+        border-radius: 10px;
+        border: 1px solid #76e6ff;
+    }
+    to {
+        border-width: 6px;
+    }
 }

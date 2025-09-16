@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux'
 import type { RootState } from '../../store/store'
 
 const SkillsForm = () => {
-  const { skills, languages, interests } = useSelector((state: RootState) => state.contentEditor.skills)
+  const { skills, languages, interests, elementID, languagesElementID, interestsElementID } = useSelector((state: RootState) => state.contentEditor.skills)
   return (
-    <ContentEditor isEditable={false} isDraggable={true} title="Skills & Interests">
+    <ContentEditor name={elementID} isEditable={false} isDraggable={true} title="Skills & Interests">
         <SkillsSection skills={skills} />
-        <LanguagesSection languages={languages} />
-        <InterestsSection interests={interests} />
+        <LanguagesSection elemID={languagesElementID} languages={languages} />
+        <InterestsSection elemID={interestsElementID} interests={interests} />
     </ContentEditor>
   )
 }

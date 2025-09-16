@@ -8,8 +8,8 @@ interface SwitchBtnProps {
 const SwitchBtn = ({label, handleClick, isChecked}: SwitchBtnProps) => {
   return (
     <div className="switch-btn">
-      <label className="toggle" aria-label="Airplane mode" onClick={handleClick}>
-        <input type="checkbox" role="switch" checked={isChecked}/>
+      <label className="toggle" aria-label="Airplane mode">
+        <input type="checkbox" role="switch" defaultChecked={isChecked} onChange={handleClick}/>
         <span className="track"></span>
         <span className="thumb"></span>
       </label>

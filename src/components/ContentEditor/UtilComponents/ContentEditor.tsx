@@ -4,11 +4,14 @@ import DragIcon from "../../../assets/icons/drag.png";
 import ShowIcon from "../../../assets/icons/view.png";
 import HideIcon from "../../../assets/icons/hide.png";
 import TrashIcon from "../../../assets/icons/trash-bin.png";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../store/store";
 
 interface ContentEditorProps {
   children: React.ReactNode;
   title: string;
   isEditable: boolean;
+  name?: string;
   isDraggable?: boolean;
   onDelete?: () => void;
   onSectionHidden?: () => void;
@@ -18,12 +21,14 @@ const ContentEditor = ({
   children,
   title,
   isEditable,
+  name,
   isDraggable,
   onSectionHidden,
   onDelete,
 }: ContentEditorProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSectionHidden, setIsSectionHidden] = useState<boolean>(false)
+  const {activeSelection} = useSelector((state: RootState) => state.resumeEditor);
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
@@ -40,15 +45,15 @@ const ContentEditor = ({
   };
 
   return (
-    <div className="content-editor-children">
+    <div id={name && !isEditable ? name : ""} className={`content-editor-children ${name && name === activeSelection && !isEditable ? "edit-selected" : ""}`}>
       <div className="content-editor-heading">
-        <div className="heading-holder">
+        <div className={`heading-holder ${name && name === activeSelection && isEditable ? "edit-selected" : ""}`}>
           {isDraggable && (
             <button className="content-edit pointer icon-btn drag-btn grabbable">
               <img src={DragIcon} alt="drag icon" />
             </button>
           )}
-          <h2>{title}</h2>
+          <h2 id={name && isEditable ? name : ""}>{title}</h2>
           {isEditable && (
             <button className="content-edit pointer icon-btn">
               <img src={PenIcon} alt="edit icon" />

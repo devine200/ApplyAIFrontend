@@ -11,7 +11,7 @@ export interface ContentEditorSectionParams{
   addSectionParams?: AddSectionParams;
 }
 
-export interface ContactInfo {
+export interface ContactInfo{
   name: string;
   value: string;
   isHidden?: boolean;
@@ -23,58 +23,79 @@ export interface AddSectionParams {
   btnName: string;
 }
 
-export interface CertificationCredential {
+export interface CertificationCredential extends EditableContent {
   school: string;
   course: string;
   degree: string;
   duration: string;
-  relevantCourses: string;
+  relevantCourses?: string;
 }
 
-export interface ExperienceItem {
+export interface ResumeProps {
+  resumeTemplate: ResumeTemplate;
+  handleEditSection: (to: string) => void;
+  getDesignField: (field: DesignField) => string;
+}
+
+export interface ResponsibilityItem extends EditableContent {
+  value: string;
+  isHidden?: boolean;
+}
+
+export interface ExperienceItem extends EditableContent {
   jobTitle: string;
+  jobTitleElementID: string;
   company: string;
   duration: string;
-  responsibilities: string[];
+  responsibilities: ResponsibilityItem[];
 }
 
-export interface SkillItem {
+export interface SkillItem extends EditableContent {
   categoryName: string;
   skills: string[];
 }
 
-export interface HeaderContent extends ContentEditorSectionParams {
+export interface EditableContent {
+  elementID: string;
+}
+
+export interface HeaderContent extends ContentEditorSectionParams, EditableContent {
   location: ContactInfo;
   contactInfos: ContactInfo[]
   showFullUrls: boolean;
 }
 
-export interface ProfessionalSummary extends ContentEditorSectionParams {
+export interface ProfessionalSummary extends ContentEditorSectionParams, EditableContent {
   content?: string;
+  contentElementID: string;
 }
 
-export interface Certification extends ContentEditorSectionParams {
+export interface Certification extends ContentEditorSectionParams, EditableContent {
   content?: string;
+  contentElementID: string;
 }
 
-export interface Education extends ContentEditorSectionParams {
+export interface Education extends ContentEditorSectionParams, EditableContent {
   certifications: CertificationCredential[];
 }
 
-export interface Experience extends ContentEditorSectionParams {
+export interface Experience extends ContentEditorSectionParams, EditableContent {
   experiences: ExperienceItem[];
 }
 
-export interface Skills extends ContentEditorSectionParams {
+export interface Skills extends ContentEditorSectionParams, EditableContent {
   skills: SkillItem[];
   languages: string[];
   interests: string;
-  isSkillHidden?: boolean;
+  languagesElementID: string;
+  interestsElementID: string;
+  isSkillsHidden?: boolean;
   isLanguageHidden?: boolean;
   isInterestsHidden?: boolean;
 }
 
 export interface ContentEditorState {
+  name: string;
   header: HeaderContent;
   professionalSummary: ProfessionalSummary;
   education: Education;
@@ -107,4 +128,9 @@ export interface ResumeTemplate {
 export interface DesignEditorState {
   resumeTemplates: ResumeTemplate[];
   selectedTemplateIdx: number;
+}
+
+export interface ResumeEditorState {
+  activeTab: EditorTabEnum;
+  activeSelection?: string;
 }

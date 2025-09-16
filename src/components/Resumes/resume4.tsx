@@ -1,132 +1,326 @@
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 import "../../styles/Resume/resume4.css";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import type { ResumeProps } from "../../types";
 
-const Resume4 = () => {
+const Resume4 = ({ handleEditSection, getDesignField, resumeTemplate  }: ResumeProps) => {
+  const {
+    name,
+    header,
+    professionalSummary,
+    education,
+    professionalExperiences,
+    outsideExperiences,
+    skills,
+    certification,
+  } = useSelector((state: RootState) => state.contentEditor);
+
+  /* Extracting design styles */
+  const { contentFormatFields, textFormatFields, layoutFields, templateSelection } = resumeTemplate;
+  const skillLayoutStyle =
+    getDesignField(contentFormatFields[1]) !== "listed"
+      ? "not-listed"
+      : "";
+  const bulletIconStyle = `list-${
+    getDesignField(contentFormatFields[0]).toLowerCase().split(" ")[1]
+  }`;
+  const fontFamilyStyle = getDesignField(textFormatFields[0]);
+  const fontSizeStyle = `fs${getDesignField(textFormatFields[1])}`;
+  const lineHeightStyle = getDesignField(textFormatFields[2]);
+  const nameCapitalizedStyle =
+    getDesignField(textFormatFields[3]) === "true"
+      ? "uppercase"
+      : "capitalize";
+  const marginMetrics = {
+    small: "20px",
+    medium: "30px",
+    large: "40px",
+  };
+  const marginSizeStyle = marginMetrics[getDesignField(layoutFields[1]).toLowerCase()];
+  const headerAlignStyle = `${getDesignField(layoutFields[0]).toLowerCase()}-align`;
+  const colorStyle = templateSelection.colors![templateSelection.selectedColorIdx!];
+
   return (
-    <div className="container page resume4">
-      <div className="sidebar">
-        <h1>Samuel Emeh</h1>
-        <p>samuelem20c@gmail.com</p>
-        <p>+234 903 046 8674</p>
-        <p>Lagos, Nigeria</p>
-        <a href="https://linkedin.com/in/samuel-emeh-8456d171b">
-          linkedin.com/in/samuel-emeh-8456d171b
-        </a>
-        <a href="https://github.com/devine200">github.com/devine200</a>
-
-        <h3>Interests</h3>
-        <p>Playing Games</p>
+    <div className={`container page resume4 ${fontSizeStyle} ${skillLayoutStyle} ${bulletIconStyle} ${headerAlignStyle}`}
+    style={{
+      fontFamily: fontFamilyStyle,
+      lineHeight: lineHeightStyle,
+    }}>
+      <div className="sidebar" style={{background: colorStyle}}>
+        <div className="header">
+          <h1 style={{ textTransform: nameCapitalizedStyle }}>{name}</h1>
+          <div
+            className="editable-section"
+            onClick={() => {
+              console.log("clicking");
+              handleEditSection(header.elementID);
+            }}
+          >
+            <p key={uuidv4()}>
+              <a className="no-underline">{header.location.value}</a>
+            </p>
+            {header.contactInfos.map(({ name, value, link }) => {
+              return (
+                <p key={uuidv4()}>
+                  <a className="no-underline">
+                    {link && name.toLowerCase() !== "email"
+                      ? link
+                        ? link
+                        : value
+                      : value}
+                  </a>
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div
+          className="editable-section"
+          onClick={() => {
+            handleEditSection(skills.languagesElementID);
+          }}
+        >
+          <h3>Languages</h3>
+          <p>{skills.languages.join(", ")}</p>
+        </div>
+        <div
+          className="editable-section"
+          onClick={() => {
+            handleEditSection(skills.interestsElementID);
+          }}
+        >
+          <h3>Interests</h3>
+          <p>{skills.interests}</p>
+        </div>
       </div>
 
       <div className="main">
         <div className="summary">
-          <div className="section-title">Professional Summary</div>
-          <p>
-            Full-Stack Engineer and LLM Developer with expertise in Python,
-            Django, React, and TypeScript, experienced in building scalable
-            applications, AI integrations, and blockchain solutions. Skilled at
-            optimizing backend performance, developing responsive frontends, and
-            deploying secure systems on AWS, GCP, and Docker. Proven ability to
-            lead teams, unblock developers, and deliver production-ready
-            solutions, with successful projects at Outsella, Tradable, and
-            Melscape.
+          <div
+            className="section-title editable-section"
+            onClick={() => {
+              handleEditSection(professionalSummary.elementID);
+            }}
+            style={{color: colorStyle}}
+          >
+            {professionalSummary.title}
+          </div>
+          <p
+            className="editable-section"
+            onClick={() => {
+              handleEditSection(professionalSummary.contentElementID);
+            }}
+          >
+            {professionalSummary.content}
           </p>
         </div>
 
         <div className="education">
-          <div className="section-title">Education</div>
-          <p>
-            <strong>Nnamdi Azikiwe University</strong>{" "}
-            <span>September 2017 - July 2023</span>
-          </p>
-          <p>Bachelor’s, Electronic and Computer Engineering</p>
+          <div
+            className="section-title editable-section"
+            onClick={() => {
+              handleEditSection(education.elementID);
+            }}
+            style={{color: colorStyle}}
+          >
+            {education.title}
+          </div>
+          {education.certifications.map(
+            ({
+              school,
+              course,
+              degree,
+              duration,
+              relevantCourses,
+              elementID,
+            }) => (
+              <div
+                className="editable-section"
+                key={uuidv4()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEditSection(elementID);
+                }}
+              >
+                <p>
+                  <strong>{school}</strong> <span>{duration}</span>
+                </p>
+                <p>
+                  {degree}, {course}
+                </p>
+                {relevantCourses && <p>{relevantCourses}</p>}
+              </div>
+            )
+          )}
         </div>
 
+        {certification.content && (
+          <div className="education">
+            <div
+              className="section-title editable-section"
+              onClick={() => {
+                handleEditSection(certification.elementID);
+              }}
+              style={{color: colorStyle}}
+            >
+              {certification.title}
+            </div>
+            <div
+              className="editable-section"
+              key={uuidv4()}
+              onClick={() => {
+                handleEditSection(certification.contentElementID);
+              }}
+            >
+              {certification.content}
+            </div>
+          </div>
+        )}
+
         <div className="experience">
-          <div className="section-title">Professional Experience</div>
-
-          <div className="job">
-            <h4>
-              <span>Tradable - Lead Full-Stack Web3 Engineer</span>
-              <span>June 2022 - Present | Remote</span>
-            </h4>
-            <ul>
-              <li>
-                Oversaw and optimized web services, smart contracts, and
-                websites to maintain 99.9% uptime...
-              </li>
-              <li>
-                Built REST API endpoints using Django and Django Rest
-                Framework...
-              </li>
-              <li>
-                Configured server instances with Gunicorn, Nginx, and SSL
-                certificates...
-              </li>
-            </ul>
+          <div
+            className="section-title editable-section"
+            onClick={() => {
+              handleEditSection(professionalExperiences.elementID);
+            }}
+            style={{color: colorStyle}}
+          >
+            {professionalExperiences.title}
           </div>
 
-          <div className="job">
-            <h4>
-              Melscape - Full-Stack Web Developer | CMS & SEO Specialist{" "}
-              <span>May 2024 - June 2024 | Remote</span>
-            </h4>
-            <ul>
-              <li>
-                Built websites with appointment booking, live chat, GTtranslate
-                API, and blog features...
-              </li>
-              <li>
-                Implemented SEO strategies with Google Console, Calendly
-                integration...
-              </li>
-            </ul>
-          </div>
-
-          <div className="job">
-            <h4>
-              BabylonDAO - Smart Contract Developer | Solana Blockchain Engineer{" "}
-              <span>May 2021 - June 2022 | Remote</span>
-            </h4>
-            <ul>
-              <li>
-                Designed and implemented Solana smart contracts in Rust and
-                TypeScript...
-              </li>
-              <li>
-                Deployed and verified BabylonDAO token on Solana token
-                listing...
-              </li>
-            </ul>
-          </div>
+          {professionalExperiences.experiences.map(
+            ({
+              jobTitle,
+              company,
+              duration,
+              responsibilities,
+              elementID,
+              jobTitleElementID,
+            }) => {
+              return (
+                <div
+                  className="job editable-section"
+                  key={uuidv4()}
+                  onClick={() => {
+                    handleEditSection(elementID);
+                  }}
+                >
+                  <h4>
+                    <span
+                      className="editable-section"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditSection(jobTitleElementID);
+                      }}
+                    >
+                      {company} - {jobTitle}
+                    </span>
+                    <span>{duration}</span>
+                  </h4>
+                  <ul>
+                    {responsibilities.map(({ value, elementID }) => (
+                      <li
+                        className="editable-section"
+                        key={uuidv4()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditSection(elementID);
+                        }}
+                      >
+                        {value}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            }
+          )}
         </div>
 
         <div className="projects">
-          <div className="section-title">Projects & Outside Experience</div>
-          <div className="job">
-            <h4>
-              Artemble - Fullstack Web3 Engineer{" "}
-              <span>January 2022 - May 2022 | Remote</span>
-            </h4>
-            <ul>
-              <li>
-                Designed and deployed an Ethereum-based NFT presale smart
-                contract...
-              </li>
-              <li>
-                Connected smart contract with frontend, achieving a 98% success
-                rate...
-              </li>
-            </ul>
+          <div
+            className="section-title editable-section"
+            onClick={() => {
+              handleEditSection(outsideExperiences.elementID);
+            }}
+            style={{color: colorStyle}}
+          >
+            {outsideExperiences.title}
           </div>
+
+          {outsideExperiences.experiences.map(
+            ({
+              jobTitle,
+              company,
+              duration,
+              responsibilities,
+              elementID,
+              jobTitleElementID,
+            }) => {
+              return (
+                <div
+                  className="job editable-section"
+                  key={uuidv4()}
+                  onClick={() => {
+                    handleEditSection(elementID);
+                  }}
+                >
+                  <h4>
+                    <span
+                      className="editable-section"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditSection(jobTitleElementID);
+                      }}
+                    >
+                      {company} - {jobTitle}
+                    </span>
+                    <span>{duration}</span>
+                  </h4>
+                  <ul>
+                    {responsibilities.map(({ value, elementID }) => (
+                      <li
+                        className="editable-section"
+                        key={uuidv4()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditSection(elementID);
+                        }}
+                      >
+                        {value}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            }
+          )}
         </div>
 
         <div className="skills">
-          <div className="section-title">Skills</div>
-          <p className="skills-list">
-            Python, TypeScript, JavaScript, Django, Solidity, Rust, HTML/CSS,
-            Node.js, Express.js, MySQL, Nginx, Redis
-          </p>
+          <div
+            className="section-title editable-section"
+            onClick={() => {
+              handleEditSection(skills.elementID);
+            }}
+            style={{color: colorStyle}}
+          >
+            Skills
+          </div>
+          {skills.skills.map(({ categoryName, skills, elementID }) => (
+            <p
+              className="skills-list editable-section"
+              key={uuidv4()}
+              onClick={() => {
+                handleEditSection(elementID);
+              }}
+            >
+              <strong>{categoryName}: </strong>
+              {skills.join(", ")}
+            </p>
+          ))}
         </div>
       </div>
     </div>

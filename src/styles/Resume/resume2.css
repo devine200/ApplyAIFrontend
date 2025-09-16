@@ -4,49 +4,69 @@
   line-height: 1.6;
   width: 850px;
   background: #fff;
-  padding: 20px;
+  padding: 0px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  font-size: var(--font-size);
 }
+
+.resume2 .resume2-body {
+  padding: 0px 20px 20px 20px;
+}
+
 /* Header */
 .resume2 .header {
   text-align: center;
-  border-bottom: 4px solid #222;
+  background: #222;
+  color: white;
   padding-bottom: 15px;
   margin-bottom: 20px;
+  padding-top: 30px;
 }
+
+.resume2.left-align .header {
+  text-align: left;
+}
+
+.resume2.right-align .header {
+  text-align: right;
+}
+
+.resume2.center-align .header {
+  text-align: center;
+}
+
 .resume2 .header h1 {
   margin: 0;
-  font-size: 18px;
+  font-size: calc(var(--font-size) * 2.4);
   font-weight: bold;
 }
 .resume2 .header p {
   margin: 6px 0 0;
-  font-size: 8px;
-  color: #444;
+  font-size: inherit;
 }
 .resume2 .header a {
-  color: #222;
+  color: inherit;
   text-decoration: none;
 }
 /* Sections */
 .resume2 h2 {
-  font-size: 12px;
+  font-size: calc(var(--font-size) * 1.2);
   margin: 14px 0 6px;
   color: #222;
   border-bottom: 2px solid #ddd;
   padding-bottom: 6px;
 }
 .resume2 p {
-  font-size: 8px;
+  font-size: inherit;
   margin: 8px 0;
 }
 .resume2 ul {
-  margin: 8px 0 8px 20px;
-  padding-left: 10px;
+  margin: 8px 0 8px 15px;
+  padding-left: 0px;
 }
 .resume2 ul li {
   margin-bottom: 2px;
-  font-size: 8px;
+  font-size: inherit;
 }
 .resume2 strong {
     font-size: inherit;
@@ -64,7 +84,7 @@
 }
 .resume2 .muted {
   color: #666;
-  font-size: 8px;
+  font-size: inherit;
 }
 /* Jobs */
 .resume2 .job {
@@ -72,11 +92,11 @@
 }
 .resume2 .job h3 {
   margin: 0 0 6px;
-  font-size: 8px;
+  font-size: inherit;
   font-weight: 700;
 }
 .resume2 .job .meta {
-  font-size: 8px;
+  font-size: inherit;
   color: #666;
   margin: 0 0 6px;
 }
@@ -89,5 +109,5 @@
 }
 
 .resume2 .job-header {
-  font-size: 8px;
+  font-size: inherit;
 }

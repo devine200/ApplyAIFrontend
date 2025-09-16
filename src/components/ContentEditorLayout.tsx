@@ -7,19 +7,13 @@ import OutsideExperienceForm from "./ContentEditor/OutsideExperienceForm"
 import SkillsForm from "./ContentEditor/SkillsForm"
 import ContentEditorHeader from "./ContentEditor/ContentEditorHeader"
 import EditorTab from "./EditorTab"
-import type { EditorTabEnum } from "../types"
 import AddCustomSection from "./AddCustomSection"
 
 
-interface ContentEditorLayoutProps {
-  activeTab: EditorTabEnum;
-  onTabChange: (tab: EditorTabEnum) => void;
-}
-
-const ContentEditorLayout = ({ activeTab, onTabChange }: ContentEditorLayoutProps) => {
+const ContentEditorLayout = () => {
   return (
     <div className="layout-section content-editor-layout">
-        <EditorTab activeTab={activeTab} onTabChange={onTabChange}/>
+        <EditorTab />
         <ContentEditorHeader />
         <HeaderContentForm />
         <ProfessionalSummaryForm />

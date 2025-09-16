@@ -2,13 +2,14 @@
   --muted: #767676;
   --line: #ececec;
   --h-line: #000;
+  
 }
 
 .resume1-body {
     margin: 0;
     background: #fff;
     color: #111;
-    font-size: 10px;
+    font-size: var(--font-size);
     font-family: serif;
 }
 
@@ -24,6 +25,31 @@
   align-items: center;
   gap: 8px;
 }
+
+.resume1-body.left-align .header {
+  align-items: flex-start;
+}
+
+.resume1-body.left-align .contact {
+  text-align: left;
+}
+
+.resume1-body.right-align .header {
+  align-items: flex-end;
+}
+
+.resume1-body.right-align .contact {
+  text-align: right;
+}
+
+.resume1-body.center-align .header {
+  align-items: center;
+}
+
+.resume1-body.center-align .contact {
+  text-align: center;
+}
+
 .resume1-body .hbr {
   text-decoration: none;
   color: inherit;
@@ -31,13 +57,13 @@
   border-right: 2px solid var(--line);
 }
 .resume1-body h1 {
-  font-size: 18px;
+  font-size: calc(var(--font-size) * 2.4);
   margin: 0;
   text-align: center;
   transform: scaleX(1.05416);
 }
 .resume1-body .contact {
-  font-size: 10px;
+  font-size: inherit;
   color: var(--muted);
   text-align: center;
 }
@@ -53,7 +79,7 @@
   /* border-top: 1px solid var(--line); */
 }
 .resume1-body h2 {
-  font-size: 12px;
+  font-size: calc(var(--font-size) * 1.2);
   margin: 0 0 4px 0;
   text-transform: uppercase;
   color: #222;
@@ -63,7 +89,7 @@
   font-weight: 700;
 }
 .resume1-body .meta {
-  font-size: 10px;
+  font-size: inherit;
   color: var(--muted);
   font-style: italic;
 }

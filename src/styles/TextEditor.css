@@ -1,0 +1,14 @@
+.sun-editor .se-resizing-bar {
+    background: none;
+    border-top: none;
+}
+
+.sun-editor {
+    height: 250px;
+    border-radius: 10px;
+    font: inherit;
+}
+
+.sun-editor .se-resizing-bar .se-navigation {
+    display: none;
+}

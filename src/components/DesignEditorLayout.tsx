@@ -1,5 +1,6 @@
 import React from "react";
-import type { DesignField, EditorTabEnum } from "../types";
+import { v4 as uuidv4 } from 'uuid';
+import type { DesignField } from "../types";
 import EditorTab from "./EditorTab";
 import LayoutDesignSelector from "./DesignEditor/LayoutDesignSelector";
 import StyleSelector from "./DesignEditor/StyleSelector";
@@ -9,15 +10,8 @@ import type { RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSkillLayout, updateLayoutFieldSelection, updateTextFormatFieldSelection, updateContentFormatFieldSelection } from "../store/DesignEditor/designEditor";
 
-interface ContentEditorLayoutProps {
-  activeTab: EditorTabEnum;
-  onTabChange: (tab: EditorTabEnum) => void;
-}
 
-const DesignEditorLayout = ({
-  activeTab,
-  onTabChange,
-}: ContentEditorLayoutProps) => {
+const DesignEditorLayout = () => {
   const dispatch = useDispatch();
   const { resumeTemplates, selectedTemplateIdx } = useSelector(
     (state: RootState) => state.designEditor
@@ -43,13 +37,14 @@ const DesignEditorLayout = ({
 
   return (
     <div className="layout-section">
-      <EditorTab activeTab={activeTab} onTabChange={onTabChange} />
+      <EditorTab />
       <div className="design-editor-section">
         <DesignEditorForm title="Layout & Design" hasBottomBorder={true}>
           <LayoutDesignSelector />
           {layoutFields.map(
             ({ name, options, selectedOptionIdx }: DesignField, index) => (
               <StyleSelector
+                key={uuidv4()}
                 fieldIdx={index}
                 styleName={name}
                 styleOptions={options}
@@ -64,6 +59,7 @@ const DesignEditorLayout = ({
           {textFormatFields.map(
             ({ name, options, selectedOptionIdx }: DesignField, index) => (
               <StyleSelector
+              key={uuidv4()}
               fieldIdx={index}
               styleName={name}
               styleOptions={options}
@@ -78,6 +74,7 @@ const DesignEditorLayout = ({
           {contentFormatFields.map(
             ({ name, options, selectedOptionIdx }: DesignField, index) => name.toLowerCase() !== "skills layout" ? (
               <StyleSelector
+                key={uuidv4()}
                 fieldIdx={index}
                 styleName={name}
                 styleOptions={options}

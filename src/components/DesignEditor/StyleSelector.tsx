@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 interface StyleSelectorProps {
   fieldIdx: number;
@@ -21,8 +22,8 @@ const StyleSelector = ({ fieldIdx, styleName, styleOptions, activeIndex, onSelec
         <h4>{styleName}</h4>
         <select className="select" defaultValue={ styleOptions && styleOptions[activeIndex]} onChange={handleChange}>
           {styleOptions &&
-            styleOptions.map((option, index) => (
-              <option value={option} key={index}>
+            styleOptions.map((option) => (
+              <option value={option} key={uuidv4()}>
                 {option}
               </option>
             ))}

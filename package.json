@@ -13,14 +13,16 @@
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.5",
     "@reduxjs/toolkit": "^2.8.2",
-    "draft-js": "^0.11.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "react-scroll": "^1.9.3",
+    "suneditor": "^2.47.7",
+    "suneditor-react": "^3.6.1",
+    "uuid": "^12.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
-    "@types/draft-js": "^0.11.18",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",

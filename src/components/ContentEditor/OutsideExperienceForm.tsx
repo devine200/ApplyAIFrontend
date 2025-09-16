@@ -4,12 +4,14 @@ import AddSection from "./UtilComponents/AddSection";
 import ExperienceItemForm from "./ExperienceItem/ExperienceItemForm";
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from 'uuid';
 
 const OutsideExperienceForm = () => {
-  const { isEditable, isDraggable, title, addSectionParams, experiences } =
+  const { isEditable, isDraggable, title, addSectionParams, experiences, elementID } =
     useSelector((state: RootState) => state.contentEditor.outsideExperiences);
   return (
     <ContentEditor
+      name={elementID}
       isEditable={isEditable}
       isDraggable={isDraggable}
       title={title}
@@ -21,11 +23,14 @@ const OutsideExperienceForm = () => {
           description={addSectionParams!.description}
         />
         {experiences &&
-          experiences.map(({ jobTitle, company, responsibilities }) => (
+          experiences.map(({ jobTitle, company, responsibilities, elementID, jobTitleElementID }) => (
             <ExperienceItemForm
+              key={uuidv4()}
               jobTitle={jobTitle}
               company={company}
               responsibilities={responsibilities}
+              elemID={elementID}
+              jobTitleElementID={jobTitleElementID}
             />
           ))}
       </div>
