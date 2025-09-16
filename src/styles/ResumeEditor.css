@@ -427,6 +427,12 @@ button.toggle-form:hover {
     margin-bottom: 30px;
 }
 
+.skill-category-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .editor-tab .tabs-holder {
     background: white;
     width: fit-content;

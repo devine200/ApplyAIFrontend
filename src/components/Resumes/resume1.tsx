@@ -97,8 +97,9 @@ const Resume1 = ({
             onClick={() => {
               handleEditSection(professionalSummary.contentElementID);
             }}
+            dangerouslySetInnerHTML={{ __html: professionalSummary.content! }}
           >
-            {professionalSummary.content}
+            {/* {professionalSummary.content} */}
           </p>
         </section>
 
@@ -147,7 +148,7 @@ const Resume1 = ({
           )}
         </section>
 
-        {certification.content && (
+        {(certification.content || certification.content === "") && (
           <section className="section" aria-label="education">
             <h2
               className="editable-section"
@@ -163,8 +164,8 @@ const Resume1 = ({
               onClick={() => {
                 handleEditSection(certification.contentElementID);
               }}
+              dangerouslySetInnerHTML={{ __html: certification.content! }}
             >
-              {certification.content}
             </div>
           </section>
         )}

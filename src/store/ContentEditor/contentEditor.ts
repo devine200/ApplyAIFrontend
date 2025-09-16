@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { ContentEditorSectionParams, ContentEditorState } from "../../types";
+import type { ContentEditorState } from "../../types";
 import { v4 as uuid } from "uuid";
 
 const initialState: ContentEditorState = {
@@ -407,6 +407,10 @@ const ContentEditorSlice = createSlice({
     deleteLanguage: (state: ContentEditorState, action: PayloadAction<number>) => {
         state.skills.languages = state.skills.languages.filter((_, index) => index !== action.payload);
     },
+    deleteCategory: (state: ContentEditorState, action: PayloadAction<string>) => {
+        const catId = action.payload;
+        state.skills.skills = state.skills.skills.filter(({elementID}) => elementID !== catId);
+    },
     deleteCategoryItem: (state: ContentEditorState, action: PayloadAction<{catId:string, itemIdx:number}>) => {
         const {catId, itemIdx} = action.payload;
         state.skills.skills.map(skills=>{
@@ -434,7 +438,19 @@ const ContentEditorSlice = createSlice({
             return skills;
         });
     },
-
+    addCategory: (state: ContentEditorState) => {
+        state.skills.skills.push({
+            categoryName: "Category",
+            skills: [],
+            elementID: uuid().toString(),
+        });
+    },
+    updateProfessionalSummaryContent: (state: ContentEditorState, action: PayloadAction<string>) => {
+        state.professionalSummary.content = action.payload;
+    },
+    updateCertificationContent: (state: ContentEditorState, action: PayloadAction<string>) => {
+        state.certification.content = action.payload;
+    }
   },
 });
 
@@ -457,7 +473,11 @@ export const {
     updateInterests,
     deleteLanguage,
     deleteCategoryItem,
+    deleteCategory,
+    addCategory,
     addCategoryItem,
     updateCategoryName,
+    updateProfessionalSummaryContent,
+    updateCertificationContent,
 } = ContentEditorSlice.actions;
 export default ContentEditorSlice.reducer;
