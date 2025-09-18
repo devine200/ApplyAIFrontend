@@ -18,6 +18,7 @@ const Resume1 = ({
     outsideExperiences,
     skills,
     certification,
+    customSections,
   } = useSelector((state: RootState) => state.contentEditor);
 
   /* Extracting design styles */
@@ -136,7 +137,7 @@ const Resume1 = ({
                     {degree}, {course}
                   </span>
                   {relevantCourses && (
-                    <span className="meta">{relevantCourses}</span>
+                    <span dangerouslySetInnerHTML={{ __html: relevantCourses }}></span>
                   )}
                 </div>
 
@@ -148,7 +149,7 @@ const Resume1 = ({
           )}
         </section>
 
-        {(certification.content || certification.content === "") && (
+        {(certification.content) && (
           <section className="section" aria-label="education">
             <h2
               className="editable-section"
@@ -358,6 +359,28 @@ const Resume1 = ({
             </div>
           )}
         </section>
+
+        {customSections.map(({title, elementID, contentElementID, content})=> 
+          content && (<section className="section" aria-label="education">
+            <h2
+              className="editable-section"
+              onClick={() => {
+                handleEditSection(elementID);
+              }}
+            >
+              {title}
+            </h2>
+            <div
+              className="edu-section editable-section"
+              key={uuidv4()}
+              onClick={() => {
+                handleEditSection(contentElementID);
+              }}
+              dangerouslySetInnerHTML={{ __html: content! }}
+            >
+            </div>
+        </section>)
+        )}
       </div>
     </div>
   );

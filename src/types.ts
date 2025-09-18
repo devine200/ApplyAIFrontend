@@ -83,6 +83,11 @@ export interface Experience extends ContentEditorSectionParams, EditableContent 
   experiences: ExperienceItem[];
 }
 
+export interface CustomSection extends ContentEditorSectionParams, EditableContent {
+  content?: string;
+  contentElementID: string;
+}
+
 export interface Skills extends ContentEditorSectionParams, EditableContent {
   skills: SkillItem[];
   languages: string[];
@@ -103,6 +108,7 @@ export interface ContentEditorState {
   professionalExperiences: Experience;
   outsideExperiences: Experience;
   skills: Skills;
+  customSections: CustomSection[];
 }
 
 export interface DesignField {

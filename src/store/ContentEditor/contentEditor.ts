@@ -261,6 +261,7 @@ const initialState: ContentEditorState = {
     languages: ["German", "English", "Spanish"],
     interests: "Traveling, Photography, Playing Guitar",
   },
+  customSections: []
 };
 
 const ContentEditorSlice = createSlice({
@@ -450,6 +451,38 @@ const ContentEditorSlice = createSlice({
     },
     updateCertificationContent: (state: ContentEditorState, action: PayloadAction<string>) => {
         state.certification.content = action.payload;
+    },
+    updateRelevantCourses: (state: ContentEditorState, action: PayloadAction<{certId: string, value: string}>) => {
+      const {certId, value} = action.payload;
+      state.education.certifications.map((certification) => {
+        if(certId === certification.elementID) {
+          certification.relevantCourses = value;
+        }
+        return certification;
+      })
+    },
+    createCustomSection: (state: ContentEditorState) => {
+      state.customSections.push({
+        title: "Custom Section",
+        isEditable: true,
+        isDraggable: true,
+        isHidden: false,
+        elementID: uuid().toString(),
+        contentElementID: uuid().toString()
+      });
+    },
+    deleteCustomSection: (state: ContentEditorState, action: PayloadAction<string>) => {
+      console.log(state.customSections.filter(({elementID}) => elementID !== action.payload).length)
+      state.customSections = state.customSections.filter(({elementID}) => elementID !== action.payload);
+    },
+    updateCustomSectionContent: (state: ContentEditorState, action: PayloadAction<{sectId:string, value: string}>) => {
+      const {sectId, value} = action.payload;
+      state.customSections.map((customSection) => {
+        if(customSection.elementID === sectId) {
+          customSection.content = value;
+        }
+        return customSection;
+      })
     }
   },
 });
@@ -479,5 +512,9 @@ export const {
     updateCategoryName,
     updateProfessionalSummaryContent,
     updateCertificationContent,
+    updateRelevantCourses,
+    createCustomSection,
+    deleteCustomSection,
+    updateCustomSectionContent,
 } = ContentEditorSlice.actions;
 export default ContentEditorSlice.reducer;

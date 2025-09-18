@@ -8,9 +8,14 @@ import SkillsForm from "./ContentEditor/SkillsForm"
 import ContentEditorHeader from "./ContentEditor/ContentEditorHeader"
 import EditorTab from "./EditorTab"
 import AddCustomSection from "./AddCustomSection"
+import { useSelector } from "react-redux"
+import type { RootState } from "../store/store"
+import CustomSectionForm from "./ContentEditor/CustomSectionForm"
 
 
 const ContentEditorLayout = () => {
+  const {customSections} = useSelector((state: RootState)=> state.contentEditor);
+
   return (
     <div className="layout-section content-editor-layout">
         <EditorTab />
@@ -22,6 +27,7 @@ const ContentEditorLayout = () => {
         <ProfessionalExperienceForm />
         <OutsideExperienceForm />
         <SkillsForm />
+        {customSections.map((_, index)=> <CustomSectionForm idx={index}/>)}
         <AddCustomSection />
     </div>
   )

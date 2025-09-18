@@ -1,40 +1,41 @@
 import React, { useRef } from "react";
 import SunEditor from "suneditor-react";
+import SunEditorCore from "suneditor/src/lib/core";
 import "suneditor/dist/css/suneditor.min.css";
-import list from "suneditor/src/plugins/submenu/list";
 import "../../../styles/TextEditor.css";
 
 interface TextEditorProps {
   value?: string;
+  hasOptions: boolean | true;
+  placeholder?: string;
+  height?: string;
   handleChange?: (value: string) => void;
 }
 
-const TextEditor = ({value, handleChange}: TextEditorProps) => {
-  const editor = useRef(null);
-  const getSunEditorInstance = (sunEditor) => {
+const TextEditor = ({value, handleChange, hasOptions, placeholder, height}: TextEditorProps) => {
+  const editor = useRef<SunEditorCore>(null);
+  const getSunEditorInstance = (sunEditor: SunEditorCore) => {
     editor.current = sunEditor;
-    // Set default content to a list
-    sunEditor.setContents("<ul><li><br></li></ul>");
-    // Move cursor into the first list item
-    const li = sunEditor.core.context.element.wysiwyg.querySelector("li");
-    if (li) sunEditor.core.setRange(li, 0, li, 0);
   };
+  const buttonList = hasOptions ? [
+      ["bold", "underline", "italic"],
+      ["list"],
+      ["outdent", "indent"],
+      ["undo", "redo"],
+    ] : [];
 
   return (
     <>
       <SunEditor
-        setContents={value ? value : "Write something here..."}
+        setContents={value ? value : ""}
         onChange={handleChange ? handleChange : ()=>{}}
         setOptions={{
-          buttonList: [
-            ["bold", "underline", "italic"],
-            ["list"],
-            ["outdent", "indent"],
-            ["undo", "redo"],
-          ]
+          buttonList,
+          placeholder,
         }}
         setDefaultStyle="text-align: left;"
         getSunEditorInstance={getSunEditorInstance}
+        height={height}
       />
     </>
   );

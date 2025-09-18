@@ -15,6 +15,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-draggable": "^4.5.0",
     "react-redux": "^9.2.0",
     "react-scroll": "^1.9.3",
     "suneditor": "^2.47.7",

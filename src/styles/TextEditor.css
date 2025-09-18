@@ -4,11 +4,15 @@
 }
 
 .sun-editor {
-    height: 250px;
+    /* height: 250px; */
     border-radius: 10px;
     font: inherit;
 }
 
 .sun-editor .se-resizing-bar .se-navigation {
     display: none;
+}
+
+.sun-editor .se-wrapper .se-placeholder {
+    text-align: left;
 }

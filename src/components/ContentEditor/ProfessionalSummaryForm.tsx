@@ -26,7 +26,7 @@ const ProfessionalSummaryForm = () => {
         id={contentElementID}
         className={contentElementID === activeSelection ? "edit-selected" : ""}
       >
-        <TextEditor value={content} handleChange={handleTextChange}/>
+        <TextEditor value={content} handleChange={handleTextChange} hasOptions={true}/>
       </div>
       <AIHelperBtn />
     </ContentEditor>

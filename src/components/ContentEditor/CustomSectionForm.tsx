@@ -3,12 +3,18 @@ import ContentEditor from './UtilComponents/ContentEditor'
 import TextEditor from './TextEditor/TextEditor'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../store/store'
-import { updateCertificationContent } from '../../store/ContentEditor/contentEditor'
+import { deleteCustomSection, updateCustomSectionContent } from '../../store/ContentEditor/contentEditor'
 
-const CertificationForm = () => {
+interface CustomSectionFormProps {
+    idx: number;
+}
+
+const CustomSectionForm = ({idx}: CustomSectionFormProps) => {
   const dispatch = useDispatch();
-  const {isEditable, title, isDraggable, elementID, content, contentElementID} = useSelector((state: RootState) => state.contentEditor.certification);
+  const {customSections} = useSelector((state: RootState) => state.contentEditor);
+  const {isEditable, title, isDraggable, elementID, content, contentElementID} = customSections[idx];
   const {activeSelection} = useSelector((state: RootState) => state.resumeEditor);
+  
   const handleTextChange = (value: string) => {
     const parser = new DOMParser();
     const elem = parser.parseFromString(value, "text/html");
@@ -22,11 +28,15 @@ const CertificationForm = () => {
       }
     }
   
-    dispatch(updateCertificationContent(updatedValue ? value : updatedValue));
+    dispatch(updateCustomSectionContent({sectId: elementID, value: updatedValue ? value : updatedValue}));
+  }
+
+  const handleDelete = ()=> {
+    dispatch(deleteCustomSection(elementID))
   }
 
   return (
-    <ContentEditor name={elementID} isEditable={isEditable} title={title} isDraggable={isDraggable}>
+    <ContentEditor name={elementID} isEditable={isEditable} title={title} isDraggable={isDraggable} onDelete={handleDelete}>
         <div
         id={contentElementID}
         className={contentElementID === activeSelection ? "edit-selected" : ""}>
@@ -36,4 +46,4 @@ const CertificationForm = () => {
   )
 }
 
-export default CertificationForm
+export default CustomSectionForm
