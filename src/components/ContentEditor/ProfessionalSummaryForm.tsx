@@ -5,6 +5,7 @@ import AIHelperBtn from "./UtilComponents/AIHelperBtn";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import { updateProfessionalSummaryContent } from "../../store/ContentEditor/contentEditor";
+import { openHeaderEditModal } from "../../store/ResumeEditor/resumeEditor";
 
 const ProfessionalSummaryForm = () => {
   const dispatch = useDispatch();
@@ -20,8 +21,12 @@ const ProfessionalSummaryForm = () => {
     dispatch(updateProfessionalSummaryContent(value))
   }
 
+  const handleEditTitle = () => {
+    dispatch(openHeaderEditModal({title, editType: elementID}))
+  }
+
   return (
-    <ContentEditor name={elementID} isEditable={isEditable} title={title}>
+    <ContentEditor onEditTitle={handleEditTitle} name={elementID} isEditable={isEditable} title={title}>
       <div
         id={contentElementID}
         className={contentElementID === activeSelection ? "edit-selected" : ""}

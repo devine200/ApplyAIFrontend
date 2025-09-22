@@ -4,6 +4,7 @@ import TextEditor from './TextEditor/TextEditor'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../store/store'
 import { updateCertificationContent } from '../../store/ContentEditor/contentEditor'
+import { openHeaderEditModal } from '../../store/ResumeEditor/resumeEditor'
 
 const CertificationForm = () => {
   const dispatch = useDispatch();
@@ -25,8 +26,12 @@ const CertificationForm = () => {
     dispatch(updateCertificationContent(updatedValue ? value : updatedValue));
   }
 
+  const handleEditTitle = () => {
+    dispatch(openHeaderEditModal({title, editType: elementID}))
+  }
+
   return (
-    <ContentEditor name={elementID} isEditable={isEditable} title={title} isDraggable={isDraggable}>
+    <ContentEditor onEditTitle={handleEditTitle} name={elementID} isEditable={isEditable} title={title} isDraggable={isDraggable}>
         <div
         id={contentElementID}
         className={contentElementID === activeSelection ? "edit-selected" : ""}>

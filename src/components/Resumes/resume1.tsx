@@ -1,8 +1,15 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import type { ResumeProps } from "../../types";
+import HeaderSection from "./resume1/HeaderSection";
+import ProfessionalSummarySection from "./resume1/ProfessionalSummarySection";
+import EducationSection from "./resume1/EducationSection";
+import CertificationSection from "./resume1/CertificationSection";
+import ProfessionalExperienceSection from "./resume1/ProfessionalExperienceSection";
+import OutsideExperienceSection from "./resume1/OutsideExperienceSection";
+import SkillsSection from "./resume1/SkillsSection";
+import CustomSection from "./resume1/CustomSection";
 
 const Resume1 = ({
   handleEditSection,
@@ -19,6 +26,7 @@ const Resume1 = ({
     skills,
     certification,
     customSections,
+    sectionSequenceIds,
   } = useSelector((state: RootState) => state.contentEditor);
 
   /* Extracting design styles */
@@ -45,6 +53,40 @@ const Resume1 = ({
     layoutFields[0]
   ).toLowerCase()}-align`;
 
+  const renderLayoutSequence = (sectId: string) => {
+    switch (sectId) {
+      case header.elementID:
+        return React.createElement(HeaderSection, {
+          handleEditSection,
+          nameCapitalizedStyle,
+        });
+      case professionalSummary.elementID:
+        return React.createElement(ProfessionalSummarySection, {handleEditSection});
+      case education.elementID:
+        return React.createElement(EducationSection, {handleEditSection});
+      case certification.elementID:
+        return React.createElement(CertificationSection, {handleEditSection});
+      case professionalExperiences.elementID:
+        return React.createElement(ProfessionalExperienceSection, {handleEditSection});
+      case outsideExperiences.elementID:
+        return React.createElement(OutsideExperienceSection, {handleEditSection});
+      case skills.elementID:
+        return React.createElement(SkillsSection, {handleEditSection});
+      default:
+        for (const customSection of customSections) {
+          if (customSection.elementID === sectId) {
+            return React.createElement(CustomSection, {
+              content: customSection.content!,
+              title: customSection.title,
+              elementID: customSection.elementID,
+              contentElementID: customSection.contentElementID,
+              handleEditSection,
+            });
+          }
+        }
+    }
+  };
+
   return (
     <div
       className={`resume1-body page ${fontSizeStyle} ${skillLayoutStyle} ${bulletIconStyle} ${headerAlignStyle}`}
@@ -56,331 +98,7 @@ const Resume1 = ({
       }}
     >
       <div className="sheet" role="main">
-        <div className="header">
-          <h1 style={{ textTransform: nameCapitalizedStyle }}>{name}</h1>
-          <div
-            className="contact editable-section"
-            onClick={() => {
-              console.log("clicking");
-              handleEditSection(header.elementID);
-            }}
-          >
-            <span className="hbr">{header.title}</span>
-            {!header.location.isHidden && (
-              <span className="hbr">{header.location.value}</span>
-            )}
-            {header.contactInfos
-              .filter(({ isHidden }) => !isHidden)
-              .map((contact) => (
-                <span key={uuidv4()} className="hbr">
-                  {!header.showFullUrls
-                    ? contact.name.toLowerCase() === "email" ||
-                      contact.name.toLowerCase() === "phone number"
-                      ? contact.value
-                      : contact.name
-                    : contact.value}
-                </span>
-              ))}
-          </div>
-        </div>
-
-        <section className="section" aria-label="summary">
-          <h2
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(professionalSummary.elementID);
-            }}
-          >
-            {professionalSummary.title}
-          </h2>
-          <p
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(professionalSummary.contentElementID);
-            }}
-            dangerouslySetInnerHTML={{ __html: professionalSummary.content! }}
-          >
-            {/* {professionalSummary.content} */}
-          </p>
-        </section>
-
-        <section className="section" aria-label="education">
-          <h2
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(education.elementID);
-            }}
-          >
-            {education.title}
-          </h2>
-          {education.certifications.map(
-            ({
-              school,
-              course,
-              degree,
-              duration,
-              relevantCourses,
-              elementID,
-            }) => (
-              <div
-                className="edu-section editable-section"
-                key={uuidv4()}
-                onClick={(e) => {
-                  console.log(elementID);
-                  e.stopPropagation();
-                  handleEditSection(elementID);
-                }}
-              >
-                <div className="edu-school-info">
-                  <span className="school-name">{school}</span>
-                  <span className="meta">
-                    {degree}, {course}
-                  </span>
-                  {relevantCourses && (
-                    <span dangerouslySetInnerHTML={{ __html: relevantCourses }}></span>
-                  )}
-                </div>
-
-                <div>
-                  <span className="edu-duration">{duration}</span>
-                </div>
-              </div>
-            )
-          )}
-        </section>
-
-        {(certification.content) && (
-          <section className="section" aria-label="education">
-            <h2
-              className="editable-section"
-              onClick={() => {
-                handleEditSection(certification.elementID);
-              }}
-            >
-              {certification.title}
-            </h2>
-            <div
-              className="edu-section editable-section"
-              key={uuidv4()}
-              onClick={() => {
-                handleEditSection(certification.contentElementID);
-              }}
-              dangerouslySetInnerHTML={{ __html: certification.content! }}
-            >
-            </div>
-          </section>
-        )}
-
-        <section className="section" aria-label="experience">
-          <h2
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(professionalExperiences.elementID);
-            }}
-          >
-            {professionalExperiences.title}
-          </h2>
-
-          {professionalExperiences.experiences.map(
-            ({
-              jobTitle,
-              company,
-              duration,
-              responsibilities,
-              elementID,
-              jobTitleElementID,
-            }) => {
-              return (
-                <div
-                  className="exp-section editable-section"
-                  key={uuidv4()}
-                  onClick={() => {
-                    handleEditSection(elementID);
-                  }}
-                >
-                  <div className="exp-header">
-                    <div>
-                      <div className="role">{company}</div>
-                      <div
-                        className="meta editable-section"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditSection(jobTitleElementID);
-                        }}
-                      >
-                        {jobTitle}
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="role">City, Country</div>
-                      <div className="meta">{duration}</div>
-                    </div>
-                  </div>
-                  <ul>
-                    {responsibilities.filter(({isHidden}) => !isHidden).map(({ value, elementID }) => (
-                      <li
-                        className="editable-section"
-                        key={uuidv4()}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditSection(elementID);
-                        }}
-                      >
-                        {value}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            }
-          )}
-        </section>
-
-        <section className="section" aria-label="experience">
-          <h2
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(outsideExperiences.elementID);
-            }}
-          >
-            {outsideExperiences.title}
-          </h2>
-
-          {outsideExperiences.experiences.map(
-            ({
-              jobTitle,
-              company,
-              duration,
-              responsibilities,
-              elementID,
-              jobTitleElementID,
-            }) => {
-              return (
-                <div
-                  className="exp-section editable-section"
-                  key={uuidv4()}
-                  onClick={() => {
-                    handleEditSection(elementID);
-                  }}
-                >
-                  <div className="exp-header">
-                    <div>
-                      <div className="role">{company}</div>
-                      <div
-                        className="meta editable-section"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditSection(jobTitleElementID);
-                        }}
-                      >
-                        {jobTitle}
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="role">City, Country</div>
-                      <div className="meta">{duration}</div>
-                    </div>
-                  </div>
-                  <ul>
-                    {responsibilities.filter(({isHidden}) => !isHidden).map(({ value, elementID }) => (
-                      <li
-                        className="editable-section"
-                        key={uuidv4()}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditSection(elementID);
-                        }}
-                      >
-                        {value}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            }
-          )}
-        </section>
-
-        <section className="section" aria-label="skills">
-          <h2
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(skills.elementID);
-            }}
-          >
-            Skills
-          </h2>
-          {!skills.isSkillsHidden && skills.skills.map(({ categoryName, skills, elementID }) => (
-            <div
-              className="skill-section editable-section"
-              key={uuidv4()}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleEditSection(elementID);
-              }}
-            >
-              <span className="topic">{categoryName}:</span>
-              <ul className="skills">
-                {skills.map((skill) => (
-                  <li key={uuidv4()}>{skill},</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          {skills.languages.length > 0 && !skills.isLanguageHidden && (
-            <div
-              className="skill-section editable-section"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleEditSection(skills.languagesElementID);
-              }}
-            >
-              <span className="topic">Languages:</span>
-              <ul className="skills">
-                {skills.languages.map((language) => (
-                  <li key={uuidv4()}>{language},</li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {skills.interests && !skills.isInterestsHidden && (
-            <div
-              className="skill-section editable-section"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleEditSection(skills.interestsElementID);
-              }}
-            >
-              <span className="topic">Interests:</span>
-              <p className="skills">{skills.interests}</p>
-            </div>
-          )}
-        </section>
-
-        {customSections.map(({title, elementID, contentElementID, content})=> 
-          content && (<section className="section" aria-label="education">
-            <h2
-              className="editable-section"
-              onClick={() => {
-                handleEditSection(elementID);
-              }}
-            >
-              {title}
-            </h2>
-            <div
-              className="edu-section editable-section"
-              key={uuidv4()}
-              onClick={() => {
-                handleEditSection(contentElementID);
-              }}
-              dangerouslySetInnerHTML={{ __html: content! }}
-            >
-            </div>
-        </section>)
-        )}
+        {sectionSequenceIds.map(renderLayoutSequence)}
       </div>
     </div>
   );

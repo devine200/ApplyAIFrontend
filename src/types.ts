@@ -109,6 +109,7 @@ export interface ContentEditorState {
   outsideExperiences: Experience;
   skills: Skills;
   customSections: CustomSection[];
+  sectionSequenceIds?: string[];
 }
 
 export interface DesignField {
@@ -136,7 +137,15 @@ export interface DesignEditorState {
   selectedTemplateIdx: number;
 }
 
+export interface HeaderEditModalState {
+  editType: string;
+  title: string;
+  isHeaderEditModalOpen: boolean;
+}
+
 export interface ResumeEditorState {
   activeTab: EditorTabEnum;
   activeSelection?: string;
+  headerEditModal: HeaderEditModalState;
+  expHeaderEditModal?: string;
 }

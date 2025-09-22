@@ -4,7 +4,8 @@ import ContentEditor from "./UtilComponents/ContentEditor";
 import AddSection from "./UtilComponents/AddSection";
 import EducationContentItem from "./EducationContentItem";
 import type { RootState } from "../../store/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { openHeaderEditModal } from "../../store/ResumeEditor/resumeEditor";
 
 const EducationContentForm = () => {
   const {
@@ -15,6 +16,11 @@ const EducationContentForm = () => {
     isDraggable,
     elementID,
   } = useSelector((state: RootState) => state.contentEditor.education);
+  const dispatch = useDispatch();
+
+  const handleEditTitle = () => {
+    dispatch(openHeaderEditModal({title, editType: elementID}))
+  }
 
   return (
     <ContentEditor
@@ -22,6 +28,7 @@ const EducationContentForm = () => {
       isEditable={isEditable}
       title={title}
       isDraggable={isDraggable}
+      onEditTitle={handleEditTitle}
     >
       <div>
         <AddSection

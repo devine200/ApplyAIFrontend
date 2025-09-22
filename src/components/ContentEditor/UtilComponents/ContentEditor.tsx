@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import Draggable from "react-draggable";
 import PenIcon from "../../../assets/icons/pen.png";
 import DragIcon from "../../../assets/icons/drag.png";
 import ShowIcon from "../../../assets/icons/view.png";
@@ -7,7 +6,6 @@ import HideIcon from "../../../assets/icons/hide.png";
 import TrashIcon from "../../../assets/icons/trash-bin.png";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../store/store";
-import { v4 as uuid } from "uuid";
 
 interface ContentEditorProps {
   children: React.ReactNode;
@@ -17,6 +15,7 @@ interface ContentEditorProps {
   isDraggable?: boolean;
   onDelete?: () => void;
   onSectionHidden?: () => void;
+  onEditTitle?: () => void;
 }
 
 const ContentEditor = ({
@@ -27,17 +26,20 @@ const ContentEditor = ({
   isDraggable,
   onSectionHidden,
   onDelete,
+  onEditTitle
 }: ContentEditorProps) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [isSectionHidden, setIsSectionHidden] = useState<boolean>(false)
-  const {activeSelection} = useSelector((state: RootState) => state.resumeEditor);
+  const [isSectionHidden, setIsSectionHidden] = useState<boolean>(false);
+  const { activeSelection } = useSelector(
+    (state: RootState) => state.resumeEditor
+  );
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
   const currentElem = useRef(null);
 
   const handleHide = () => {
-    setIsSectionHidden(!isSectionHidden)
+    setIsSectionHidden(!isSectionHidden);
     if (!onSectionHidden) return;
     onSectionHidden();
   };
@@ -47,80 +49,73 @@ const ContentEditor = ({
     onDelete();
   };
 
-  const handleStart = () => {
-    
-  }
-
-  const handleStop = () => {
-
-  }
-
-  const handleDrag = (e, ui) => {
-    console.log({e, ui})
-  }
-
   return (
-    <Draggable
-      axis="y"
-      bounds="parent"
-      onStart={handleStart}
-      onDrag={handleDrag}
-      onStop={handleStop}
-      nodeRef={currentElem}
-      handle={`#${title}`}
+    <div
+      ref={currentElem}
+      id={name && !isEditable ? name : ""}
+      className={`content-editor-children ${
+        name && name === activeSelection && !isEditable ? "edit-selected" : ""
+      }`}
     >
-      <div ref={currentElem} id={name && !isEditable ? name : ""} className={`content-editor-children ${name && name === activeSelection && !isEditable ? "edit-selected" : ""}`}>
-        <div className="content-editor-heading">
-          <div className={`heading-holder ${name && name === activeSelection && isEditable ? "edit-selected" : ""}`}>
-            {isDraggable && (
-              <button id={title} className="content-edit pointer icon-btn drag-btn grabbable">
-                <img src={DragIcon} alt="drag icon" draggable="false" />
-              </button>
-            )}
-            <h2 id={name && isEditable ? name : ""}>{title}</h2>
-            {isEditable && (
-              <button className="content-edit pointer icon-btn">
-                <img src={PenIcon} alt="edit icon" />
-              </button>
-            )}
-          </div>
-          <div className="header-btn-holder">
-            {onSectionHidden !== undefined ? (
-              <button className="icon-btn pointer hide-btn" onClick={handleHide}>
-                <img
-                  src={isSectionHidden ? HideIcon : ShowIcon}
-                  alt="visibility icon"
-                />{" "}
-                <span>Hide Section</span>
-              </button>
-            ) : (
-              <></>
-            )}
-            {onDelete !== undefined ? (
-              <button
-                className="icon-btn pointer delete-btn"
-                onClick={handleDelete}
-              >
-                <img src={TrashIcon} alt="delete icon" />
-              </button>
-            ) : (
-              <></>
-            )}
+      <div className="content-editor-heading">
+        <div
+          className={`heading-holder ${
+            name && name === activeSelection && isEditable
+              ? "edit-selected"
+              : ""
+          }`}
+        >
+          {isDraggable && (
             <button
-              className={`toggle-form pointer ${
-                isOpen ? "" : "toggle-form-down"
-              }`}
-              onClick={handleToggle}
+              id={title}
+              className="content-edit pointer icon-btn drag-btn grabbable"
             >
-              {">"}
+              <img src={DragIcon} alt="drag icon" draggable="false" />
             </button>
-          </div>
+          )}
+          <h2 id={name && isEditable ? name : ""}>{title}</h2>
+          {isEditable && (
+            <button className="content-edit pointer icon-btn" onClick={onEditTitle ? onEditTitle : ()=>{}}>
+              <img src={PenIcon} alt="edit icon" />
+            </button>
+          )}
         </div>
-        <div className={`content-editor-body ${isOpen ? "" : "content-hidden"}`}>
-          {children}
+        <div className="header-btn-holder">
+          {onSectionHidden !== undefined ? (
+            <button className="icon-btn pointer hide-btn" onClick={handleHide}>
+              <img
+                src={isSectionHidden ? HideIcon : ShowIcon}
+                alt="visibility icon"
+              />{" "}
+              <span>Hide Section</span>
+            </button>
+          ) : (
+            <></>
+          )}
+          {onDelete !== undefined ? (
+            <button
+              className="icon-btn pointer delete-btn"
+              onClick={handleDelete}
+            >
+              <img src={TrashIcon} alt="delete icon" />
+            </button>
+          ) : (
+            <></>
+          )}
+          <button
+            className={`toggle-form pointer ${
+              isOpen ? "" : "toggle-form-down"
+            }`}
+            onClick={handleToggle}
+          >
+            {">"}
+          </button>
         </div>
       </div>
-    </Draggable>
+      <div className={`content-editor-body ${isOpen ? "" : "content-hidden"}`}>
+        {children}
+      </div>
+    </div>
   );
 };
 

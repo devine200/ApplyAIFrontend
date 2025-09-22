@@ -261,12 +261,23 @@ const initialState: ContentEditorState = {
     languages: ["German", "English", "Spanish"],
     interests: "Traveling, Photography, Playing Guitar",
   },
-  customSections: []
+  customSections: [],
 };
 
 const ContentEditorSlice = createSlice({
   name: "contentEditor",
-  initialState,
+  initialState: { 
+    ...initialState, 
+    sectionSequenceIds: [
+      initialState.header.elementID,
+      initialState.professionalSummary.elementID,
+      initialState.education.elementID,
+      initialState.certification.elementID,
+      initialState.professionalExperiences.elementID,
+      initialState.outsideExperiences.elementID,
+      initialState.skills.elementID,
+    ]
+  },
   reducers: {
     toggleContactVisibility: (state: ContentEditorState, action: PayloadAction<string>) => {
         state.header.contactInfos.map((contactInfo)=> {
@@ -462,18 +473,25 @@ const ContentEditorSlice = createSlice({
       })
     },
     createCustomSection: (state: ContentEditorState) => {
+      const elementID = uuid().toString();
       state.customSections.push({
         title: "Custom Section",
         isEditable: true,
         isDraggable: true,
         isHidden: false,
-        elementID: uuid().toString(),
+        elementID,
         contentElementID: uuid().toString()
       });
+
+      if(state.sectionSequenceIds){
+        state.sectionSequenceIds.push(elementID)
+      } else {
+        state.sectionSequenceIds = [elementID]
+      }
     },
     deleteCustomSection: (state: ContentEditorState, action: PayloadAction<string>) => {
-      console.log(state.customSections.filter(({elementID}) => elementID !== action.payload).length)
       state.customSections = state.customSections.filter(({elementID}) => elementID !== action.payload);
+      state.sectionSequenceIds = state.sectionSequenceIds?.filter((elementID) => elementID !== action.payload);
     },
     updateCustomSectionContent: (state: ContentEditorState, action: PayloadAction<{sectId:string, value: string}>) => {
       const {sectId, value} = action.payload;
@@ -482,6 +500,43 @@ const ContentEditorSlice = createSlice({
           customSection.content = value;
         }
         return customSection;
+      })
+    },
+    updateJobTitle: (state:ContentEditorState, action: PayloadAction<string>) => {
+      state.header.title = action.payload;
+    },
+    updateProfessionalSummaryTitle: (state:ContentEditorState, action: PayloadAction<string>) => {
+      state.professionalSummary.title = action.payload;
+    },
+    updateEducationTitle: (state:ContentEditorState, action: PayloadAction<string>) => {
+      state.education.title = action.payload;
+    },
+    updateCertificationTitle: (state:ContentEditorState, action: PayloadAction<string>) => {
+      state.certification.title = action.payload;
+    },
+    updateProfessionalExperienceTitle: (state:ContentEditorState, action: PayloadAction<string>) => {
+      state.professionalExperiences.title = action.payload;
+    },
+    updateOutsideExperienceTitle: (state:ContentEditorState, action: PayloadAction<string>) => {
+      state.outsideExperiences.title = action.payload;
+    },
+    updateSkillsTitle: (state:ContentEditorState, action: PayloadAction<string>) => {
+      state.skills.title = action.payload;
+    },
+    updateExperienceTitle: (state: ContentEditorState, action: PayloadAction<{expId: string, title: string}>) => {
+      const {title, expId} = action.payload;
+      state.professionalExperiences.experiences.map((exp)=>{
+        if(exp.jobTitleElementID === expId) {
+          exp.jobTitle = title;
+        }
+        return exp;
+      })
+      
+      state.outsideExperiences.experiences.map((exp)=>{
+        if(exp.jobTitleElementID === expId) {
+          exp.jobTitle = title;
+        }
+        return exp;
       })
     }
   },
@@ -516,5 +571,13 @@ export const {
     createCustomSection,
     deleteCustomSection,
     updateCustomSectionContent,
+    updateJobTitle,
+    updateProfessionalSummaryTitle,
+    updateEducationTitle,
+    updateCertificationTitle,
+    updateProfessionalExperienceTitle,
+    updateOutsideExperienceTitle,
+    updateSkillsTitle,
+    updateExperienceTitle,
 } = ContentEditorSlice.actions;
 export default ContentEditorSlice.reducer;

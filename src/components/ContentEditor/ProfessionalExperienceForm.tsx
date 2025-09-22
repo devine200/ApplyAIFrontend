@@ -1,10 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ContentEditor from "./UtilComponents/ContentEditor";
 import AddSection from "./UtilComponents/AddSection";
 import ExperienceItemForm from "./ExperienceItem/ExperienceItemForm";
 import type { RootState } from "../../store/store";
 import { v4 as uuidv4 } from "uuid";
+import { openHeaderEditModal } from "../../store/ResumeEditor/resumeEditor";
 
 const ProfessionalExperienceForm = () => {
   const {
@@ -17,6 +18,11 @@ const ProfessionalExperienceForm = () => {
   } = useSelector(
     (state: RootState) => state.contentEditor.professionalExperiences
   );
+  const dispatch = useDispatch();
+
+  const handleEditTitle = () => {
+    dispatch(openHeaderEditModal({title, editType: elementID}))
+  }
 
   return (
     <ContentEditor
@@ -24,6 +30,7 @@ const ProfessionalExperienceForm = () => {
       isEditable={isEditable}
       isDraggable={isDraggable}
       title={title}
+      onEditTitle={handleEditTitle}
     >
       <div>
         <AddSection

@@ -4,6 +4,7 @@ import TextEditor from './TextEditor/TextEditor'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../store/store'
 import { deleteCustomSection, updateCustomSectionContent } from '../../store/ContentEditor/contentEditor'
+import { openHeaderEditModal } from '../../store/ResumeEditor/resumeEditor'
 
 interface CustomSectionFormProps {
     idx: number;
@@ -34,9 +35,12 @@ const CustomSectionForm = ({idx}: CustomSectionFormProps) => {
   const handleDelete = ()=> {
     dispatch(deleteCustomSection(elementID))
   }
+  const handleEditTitle = () => {
+    dispatch(openHeaderEditModal({title, editType: elementID}))
+  }
 
   return (
-    <ContentEditor name={elementID} isEditable={isEditable} title={title} isDraggable={isDraggable} onDelete={handleDelete}>
+    <ContentEditor onEditTitle={handleEditTitle} name={elementID} isEditable={isEditable} title={title} isDraggable={isDraggable} onDelete={handleDelete}>
         <div
         id={contentElementID}
         className={contentElementID === activeSelection ? "edit-selected" : ""}>

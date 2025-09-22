@@ -10,17 +10,22 @@
 }
 
 .resume2 .resume2-body {
-  padding: 0px 20px 20px 20px;
+  padding-bottom: 20px;
 }
 
 /* Header */
 .resume2 .header {
   text-align: center;
-  background: #222;
+  /* background: #222; */
   color: white;
   padding-bottom: 15px;
   margin-bottom: 20px;
   padding-top: 30px;
+}
+
+.resume2 .header .contact-section a {
+  display: inline-block;
+  margin-left: 5px;
 }
 
 .resume2.left-align .header {

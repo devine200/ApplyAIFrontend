@@ -1,13 +1,23 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import "../../styles/Resume/resume4.css";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import type { ResumeProps } from "../../types";
+import HeaderSection from "./resume4/HeaderSection";
+import ProfessionalSummarySection from "./resume4/ProfessionalSummarySection";
+import EducationSection from "./resume4/EducationSection";
+import CertificationSection from "./resume4/CertificationSection";
+import ProfessionalExperienceSection from "./resume4/ProfessionalExperienceSection";
+import OutsideExperienceSection from "./resume4/OutsideExperienceSection";
+import SkillsSection from "./resume4/SkillsSection";
+import CustomSection from "./resume4/CustomSection";
 
-const Resume4 = ({ handleEditSection, getDesignField, resumeTemplate  }: ResumeProps) => {
+const Resume4 = ({
+  handleEditSection,
+  getDesignField,
+  resumeTemplate,
+}: ResumeProps) => {
   const {
-    name,
     header,
     professionalSummary,
     education,
@@ -15,14 +25,19 @@ const Resume4 = ({ handleEditSection, getDesignField, resumeTemplate  }: ResumeP
     outsideExperiences,
     skills,
     certification,
+    customSections,
+    sectionSequenceIds
   } = useSelector((state: RootState) => state.contentEditor);
 
   /* Extracting design styles */
-  const { contentFormatFields, textFormatFields, layoutFields, templateSelection } = resumeTemplate;
+  const {
+    contentFormatFields,
+    textFormatFields,
+    layoutFields,
+    templateSelection,
+  } = resumeTemplate;
   const skillLayoutStyle =
-    getDesignField(contentFormatFields[1]) !== "listed"
-      ? "not-listed"
-      : "";
+    getDesignField(contentFormatFields[1]) !== "listed" ? "not-listed" : "";
   const bulletIconStyle = `list-${
     getDesignField(contentFormatFields[0]).toLowerCase().split(" ")[1]
   }`;
@@ -30,298 +45,80 @@ const Resume4 = ({ handleEditSection, getDesignField, resumeTemplate  }: ResumeP
   const fontSizeStyle = `fs${getDesignField(textFormatFields[1])}`;
   const lineHeightStyle = getDesignField(textFormatFields[2]);
   const nameCapitalizedStyle =
-    getDesignField(textFormatFields[3]) === "true"
-      ? "uppercase"
-      : "capitalize";
-  const marginMetrics = {
-    small: "20px",
-    medium: "30px",
-    large: "40px",
+    getDesignField(textFormatFields[3]) === "true" ? "uppercase" : "capitalize";
+
+  const headerAlignStyle = `${getDesignField(
+    layoutFields[0]
+  ).toLowerCase()}-align`;
+  const colorStyle =
+    templateSelection.colors![templateSelection.selectedColorIdx!];
+
+  const renderLayoutSequence = (sectId: string) => {
+    switch (sectId) {
+      case header.elementID:
+        return React.createElement(HeaderSection, {
+          handleEditSection,
+          nameCapitalizedStyle,
+          colorStyle,
+        });
+      case professionalSummary.elementID:
+        return React.createElement(ProfessionalSummarySection, {
+          handleEditSection,
+          colorStyle,
+        });
+      case education.elementID:
+        return React.createElement(EducationSection, {
+          handleEditSection,
+          colorStyle,
+        });
+      case certification.elementID:
+        return React.createElement(CertificationSection, {
+          handleEditSection,
+          colorStyle,
+        });
+      case professionalExperiences.elementID:
+        return React.createElement(ProfessionalExperienceSection, {
+          handleEditSection,
+          colorStyle,
+        });
+      case outsideExperiences.elementID:
+        return React.createElement(OutsideExperienceSection, {
+          handleEditSection,
+          colorStyle,
+        });
+      case skills.elementID:
+        return React.createElement(SkillsSection, {
+          handleEditSection,
+          colorStyle,
+        });
+      default:
+        for (const customSection of customSections) {
+          if (customSection.elementID === sectId) {
+            return React.createElement(CustomSection, {
+              content: customSection.content!,
+              title: customSection.title,
+              elementID: customSection.elementID,
+              contentElementID: customSection.contentElementID,
+              handleEditSection,
+              colorStyle,
+            });
+          }
+        }
+    }
   };
-  const marginSizeStyle = marginMetrics[getDesignField(layoutFields[1]).toLowerCase()];
-  const headerAlignStyle = `${getDesignField(layoutFields[0]).toLowerCase()}-align`;
-  const colorStyle = templateSelection.colors![templateSelection.selectedColorIdx!];
 
   return (
-    <div className={`container page resume4 ${fontSizeStyle} ${skillLayoutStyle} ${bulletIconStyle} ${headerAlignStyle}`}
-    style={{
-      fontFamily: fontFamilyStyle,
-      lineHeight: lineHeightStyle,
-    }}>
-      <div className="sidebar" style={{background: colorStyle}}>
-        <div className="header">
-          <h1 style={{ textTransform: nameCapitalizedStyle }}>{name}</h1>
-          <div
-            className="editable-section"
-            onClick={() => {
-              console.log("clicking");
-              handleEditSection(header.elementID);
-            }}
-          >
-            <p key={uuidv4()}>
-              <a className="no-underline">{header.location.value}</a>
-            </p>
-            {header.contactInfos.map(({ name, value, link }) => {
-              return (
-                <p key={uuidv4()}>
-                  <a className="no-underline">
-                    {link && name.toLowerCase() !== "email"
-                      ? link
-                        ? link
-                        : value
-                      : value}
-                  </a>
-                </p>
-              );
-            })}
-          </div>
-        </div>
-        <div
-          className="editable-section"
-          onClick={() => {
-            handleEditSection(skills.languagesElementID);
-          }}
-        >
-          <h3>Languages</h3>
-          <p>{skills.languages.join(", ")}</p>
-        </div>
-        <div
-          className="editable-section"
-          onClick={() => {
-            handleEditSection(skills.interestsElementID);
-          }}
-        >
-          <h3>Interests</h3>
-          <p>{skills.interests}</p>
-        </div>
-      </div>
+    <div
+      className={`container page resume4 ${fontSizeStyle} ${skillLayoutStyle} ${bulletIconStyle} ${headerAlignStyle}`}
+      style={{
+        fontFamily: fontFamilyStyle,
+        lineHeight: lineHeightStyle,
+      }}
+    >
+      {renderLayoutSequence(sectionSequenceIds[0])}
 
       <div className="main">
-        <div className="summary">
-          <div
-            className="section-title editable-section"
-            onClick={() => {
-              handleEditSection(professionalSummary.elementID);
-            }}
-            style={{color: colorStyle}}
-          >
-            {professionalSummary.title}
-          </div>
-          <p
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(professionalSummary.contentElementID);
-            }}
-          >
-            {professionalSummary.content}
-          </p>
-        </div>
-
-        <div className="education">
-          <div
-            className="section-title editable-section"
-            onClick={() => {
-              handleEditSection(education.elementID);
-            }}
-            style={{color: colorStyle}}
-          >
-            {education.title}
-          </div>
-          {education.certifications.map(
-            ({
-              school,
-              course,
-              degree,
-              duration,
-              relevantCourses,
-              elementID,
-            }) => (
-              <div
-                className="editable-section"
-                key={uuidv4()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleEditSection(elementID);
-                }}
-              >
-                <p>
-                  <strong>{school}</strong> <span>{duration}</span>
-                </p>
-                <p>
-                  {degree}, {course}
-                </p>
-                {relevantCourses && <p>{relevantCourses}</p>}
-              </div>
-            )
-          )}
-        </div>
-
-        {certification.content && (
-          <div className="education">
-            <div
-              className="section-title editable-section"
-              onClick={() => {
-                handleEditSection(certification.elementID);
-              }}
-              style={{color: colorStyle}}
-            >
-              {certification.title}
-            </div>
-            <div
-              className="editable-section"
-              key={uuidv4()}
-              onClick={() => {
-                handleEditSection(certification.contentElementID);
-              }}
-            >
-              {certification.content}
-            </div>
-          </div>
-        )}
-
-        <div className="experience">
-          <div
-            className="section-title editable-section"
-            onClick={() => {
-              handleEditSection(professionalExperiences.elementID);
-            }}
-            style={{color: colorStyle}}
-          >
-            {professionalExperiences.title}
-          </div>
-
-          {professionalExperiences.experiences.map(
-            ({
-              jobTitle,
-              company,
-              duration,
-              responsibilities,
-              elementID,
-              jobTitleElementID,
-            }) => {
-              return (
-                <div
-                  className="job editable-section"
-                  key={uuidv4()}
-                  onClick={() => {
-                    handleEditSection(elementID);
-                  }}
-                >
-                  <h4>
-                    <span
-                      className="editable-section"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEditSection(jobTitleElementID);
-                      }}
-                    >
-                      {company} - {jobTitle}
-                    </span>
-                    <span>{duration}</span>
-                  </h4>
-                  <ul>
-                    {responsibilities.map(({ value, elementID }) => (
-                      <li
-                        className="editable-section"
-                        key={uuidv4()}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditSection(elementID);
-                        }}
-                      >
-                        {value}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            }
-          )}
-        </div>
-
-        <div className="projects">
-          <div
-            className="section-title editable-section"
-            onClick={() => {
-              handleEditSection(outsideExperiences.elementID);
-            }}
-            style={{color: colorStyle}}
-          >
-            {outsideExperiences.title}
-          </div>
-
-          {outsideExperiences.experiences.map(
-            ({
-              jobTitle,
-              company,
-              duration,
-              responsibilities,
-              elementID,
-              jobTitleElementID,
-            }) => {
-              return (
-                <div
-                  className="job editable-section"
-                  key={uuidv4()}
-                  onClick={() => {
-                    handleEditSection(elementID);
-                  }}
-                >
-                  <h4>
-                    <span
-                      className="editable-section"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEditSection(jobTitleElementID);
-                      }}
-                    >
-                      {company} - {jobTitle}
-                    </span>
-                    <span>{duration}</span>
-                  </h4>
-                  <ul>
-                    {responsibilities.map(({ value, elementID }) => (
-                      <li
-                        className="editable-section"
-                        key={uuidv4()}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditSection(elementID);
-                        }}
-                      >
-                        {value}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            }
-          )}
-        </div>
-
-        <div className="skills">
-          <div
-            className="section-title editable-section"
-            onClick={() => {
-              handleEditSection(skills.elementID);
-            }}
-            style={{color: colorStyle}}
-          >
-            Skills
-          </div>
-          {skills.skills.map(({ categoryName, skills, elementID }) => (
-            <p
-              className="skills-list editable-section"
-              key={uuidv4()}
-              onClick={() => {
-                handleEditSection(elementID);
-              }}
-            >
-              <strong>{categoryName}: </strong>
-              {skills.join(", ")}
-            </p>
-          ))}
-        </div>
+        {sectionSequenceIds.slice(1).map(renderLayoutSequence)}
       </div>
     </div>
   );

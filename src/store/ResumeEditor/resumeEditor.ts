@@ -3,7 +3,12 @@ import { EditorTabEnum, type ResumeEditorState } from "../../types";
 
 
 const initialState: ResumeEditorState = {
-    activeTab: EditorTabEnum.CONTENT
+    activeTab: EditorTabEnum.CONTENT,
+    headerEditModal: {
+        title: "",
+        editType: "",
+        isHeaderEditModalOpen: false
+    },
 }
 
 const ResumeEditorSlice = createSlice({
@@ -15,9 +20,18 @@ const ResumeEditorSlice = createSlice({
         },
         updateActiveSelection: (state, action: PayloadAction<string>) => {
             state.activeSelection = action.payload;
-        }
+        },
+        openHeaderEditModal: (state, action: PayloadAction<{title: string, editType: string}>) => {
+            state.headerEditModal = {
+                ...action.payload,
+                isHeaderEditModalOpen: true
+            };
+        },
+        closeHeaderEditModal: (state) => {
+            state.headerEditModal.isHeaderEditModalOpen = false;
+        },
     }
 })
 
-export const { updateTab, updateActiveSelection } = ResumeEditorSlice.actions
+export const { updateTab, updateActiveSelection, openHeaderEditModal, closeHeaderEditModal } = ResumeEditorSlice.actions
 export default ResumeEditorSlice.reducer

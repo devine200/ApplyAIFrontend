@@ -1,13 +1,19 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import "../../styles/Resume/resume3.css";
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import type { ResumeProps } from "../../types";
+import CustomSection from "./resume3/CustomSection";
+import SkillsSection from "./resume3/SkillsSection";
+import OutsideExperienceSection from "./resume3/OutsideExperienceSection";
+import ProfessionalExperienceSection from "./resume3/ProfessionalExperienceSection";
+import CertificationSection from "./resume3/CertificationSection";
+import EducationSection from "./resume3/EducationSection";
+import ProfessionalSummarySection from "./resume3/ProfessionalSummarySection";
+import HeaderSection from "./resume3/HeaderSection";
 
 const Resume3 = ({ handleEditSection, getDesignField, resumeTemplate  }: ResumeProps) => {
   const {
-    name,
     header,
     professionalSummary,
     education,
@@ -15,6 +21,8 @@ const Resume3 = ({ handleEditSection, getDesignField, resumeTemplate  }: ResumeP
     outsideExperiences,
     skills,
     certification,
+    customSections,
+    sectionSequenceIds,
   } = useSelector((state: RootState) => state.contentEditor);
 
   /* Extracting design styles */
@@ -41,6 +49,40 @@ const Resume3 = ({ handleEditSection, getDesignField, resumeTemplate  }: ResumeP
   const marginSizeStyle = marginMetrics[getDesignField(layoutFields[1]).toLowerCase()];
   const headerAlignStyle = `${getDesignField(layoutFields[0]).toLowerCase()}-align`;
 
+  const renderLayoutSequence = (sectId: string) => {
+    switch (sectId) {
+      case header.elementID:
+        return React.createElement(HeaderSection, {
+          handleEditSection,
+          nameCapitalizedStyle,
+        });
+      case professionalSummary.elementID:
+        return React.createElement(ProfessionalSummarySection, {handleEditSection});
+      case education.elementID:
+        return React.createElement(EducationSection, {handleEditSection});
+      case certification.elementID:
+        return React.createElement(CertificationSection, {handleEditSection});
+      case professionalExperiences.elementID:
+        return React.createElement(ProfessionalExperienceSection, {handleEditSection});
+      case outsideExperiences.elementID:
+        return React.createElement(OutsideExperienceSection, {handleEditSection});
+      case skills.elementID:
+        return React.createElement(SkillsSection, {handleEditSection});
+      default:
+        for (const customSection of customSections) {
+          if (customSection.elementID === sectId) {
+            return React.createElement(CustomSection, {
+              content: customSection.content!,
+              title: customSection.title,
+              elementID: customSection.elementID,
+              contentElementID: customSection.contentElementID,
+              handleEditSection,
+            });
+          }
+        }
+    }
+  };
+
   return (
     <div className={`resume3 page ${fontSizeStyle} ${skillLayoutStyle} ${bulletIconStyle} ${headerAlignStyle}`}
     style={{
@@ -49,280 +91,7 @@ const Resume3 = ({ handleEditSection, getDesignField, resumeTemplate  }: ResumeP
       paddingLeft: marginSizeStyle,
       paddingRight: marginSizeStyle,
     }}>
-      <div className="header">
-        <h1 style={{ textTransform: nameCapitalizedStyle }}>{name}</h1>
-        <div
-          className="contact editable-section"
-          onClick={() => {
-            console.log("clicking");
-            handleEditSection(header.elementID);
-          }}
-        >
-          <span key={uuidv4()}>
-            <a className="no-underline">{header.location.value} |</a>
-          </span>
-          {header.contactInfos.map(({ name, value, link }, index) => {
-            return (
-              <span key={uuidv4()}>
-                <a className="no-underline">
-                  {link && name.toLowerCase() !== "email" ? name : value}
-                </a>
-                {index < header.contactInfos.length - 1 && " | "}
-              </span>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="grid section">
-        <div className="left">
-          <span
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(professionalSummary.elementID);
-            }}
-          >
-            {professionalSummary.title}
-          </span>
-        </div>
-        <div
-          className="editable-section"
-          onClick={() => {
-            handleEditSection(professionalSummary.contentElementID);
-          }}
-        >
-          {professionalSummary.content}
-        </div>
-      </div>
-
-      <div className="grid section editable-section">
-        <div
-          className="left editable-section"
-          onClick={() => {
-            handleEditSection(education.elementID);
-          }}
-        >
-          <span className="editable-section">{education.title}</span>
-        </div>
-        {education.certifications.map(
-          ({
-            school,
-            course,
-            degree,
-            duration,
-            relevantCourses,
-            elementID,
-          }) => (
-            <div
-              key={uuidv4()}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleEditSection(elementID);
-              }}
-            >
-              <h3>
-                <span>{school}</span>
-                <span className="right-align">{duration}</span>
-              </h3>
-              <em>
-                {degree}, {course}
-              </em>
-              {relevantCourses && (
-                <>
-                  <br />
-                  <em>{relevantCourses}</em>
-                </>
-              )}
-            </div>
-          )
-        )}
-      </div>
-
-      {certification.content && (
-        <div className="grid section editable-section">
-          <div
-            className="left editable-section"
-            onClick={() => {
-              handleEditSection(certification.elementID);
-            }}
-          >
-            <span className="editable-section">{certification.title}</span>
-          </div>
-          <div
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(certification.contentElementID);
-            }}
-          >
-            {certification.content}
-          </div>
-        </div>
-      )}
-
-      <div className="grid section">
-        <div className="left">
-          <span
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(professionalExperiences.elementID);
-            }}
-          >
-            {professionalExperiences.title}
-          </span>
-        </div>
-        <div className="editable-section">
-          {professionalExperiences.experiences.map(
-            ({
-              jobTitle,
-              company,
-              duration,
-              responsibilities,
-              elementID,
-              jobTitleElementID,
-            }) => {
-              return (
-                <div
-                  className="editable-section"
-                  onClick={() => {
-                    handleEditSection(elementID);
-                  }}
-                >
-                  <h3>
-                    <span>{company} </span>
-                    <span className="right-align">Remote | {duration}</span>
-                  </h3>
-                  <p
-                    className="role editable-section"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEditSection(jobTitleElementID);
-                    }}
-                  >
-                    {jobTitle}
-                  </p>
-                  <ul>
-                    {responsibilities.map(({ value, elementID }) => (
-                      <li
-                        className="editable-section"
-                        key={uuidv4()}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditSection(elementID);
-                        }}
-                      >
-                        {value}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            }
-          )}
-        </div>
-      </div>
-      <div className="grid section">
-        <div className="left">
-          <span
-            className="editable-section"
-            onClick={() => {
-              handleEditSection(outsideExperiences.elementID);
-            }}
-          >
-            {outsideExperiences.title}
-          </span>
-        </div>
-        <div>
-          {outsideExperiences.experiences.map(
-            ({
-              jobTitle,
-              company,
-              duration,
-              responsibilities,
-              elementID,
-              jobTitleElementID,
-            }) => {
-              return (
-                <div
-                  className="editable-section"
-                  onClick={() => {
-                    handleEditSection(elementID);
-                  }}
-                >
-                  <h3>
-                    <span>{company} </span>
-                    <span className="right-align">Remote | {duration}</span>
-                  </h3>
-                  <p
-                    className="role editable-section"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEditSection(jobTitleElementID);
-                    }}
-                  >
-                    {jobTitle}
-                  </p>
-                  <ul>
-                    {responsibilities.map(({ value, elementID }) => (
-                      <li
-                        className="editable-section"
-                        key={uuidv4()}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditSection(elementID);
-                        }}
-                      >
-                        {value}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            }
-          )}
-        </div>
-      </div>
-
-      <div
-        className="grid section editable-section"
-        onClick={() => {
-          handleEditSection(skills.elementID);
-        }}
-      >
-        <div className="left editable-section">Skills</div>
-        <div className="skills-section">
-          {skills.skills.map(({ categoryName, skills, elementID }) => (
-            <div
-              className="editable-section"
-              key={uuidv4()}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleEditSection(elementID);
-              }}
-            >
-              <strong>{categoryName}:</strong> {skills.join(", ")}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div
-        className="grid section editable-section"
-        onClick={() => {
-          handleEditSection(skills.languagesElementID);
-        }}
-      >
-        <div className="left">Languages</div>
-        <div>{skills.languages.join(", ")}</div>
-      </div>
-      <div
-        className="grid section editable-section"
-        onClick={() => {
-          handleEditSection(skills.interestsElementID);
-        }}
-      >
-        <div className="left">Interests</div>
-        <div>{skills.interests}</div>
-      </div>
+      {sectionSequenceIds.map(renderLayoutSequence)}
     </div>
   );
 };
